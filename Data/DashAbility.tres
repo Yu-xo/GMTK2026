@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="UpgardeInformation" format=3 uid="uid://c4vyb05p56vxe"]
+
+[ext_resource type="Script" uid="uid://lhnxy8ietk7p" path="res://Scripts/UpgardeInformation.gd" id="1_68arc"]
+
+[resource]
+script = ExtResource("1_68arc")
+Type = 2
+metadata/_custom_type_script = "uid://lhnxy8ietk7p"

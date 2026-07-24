@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dgyfbvmcr0xel"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_45xi4"]
+radius = 6.0
+
+[node name="SpikeArea" type="Area2D" unique_id=1450256500]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=97860972]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_45xi4")
+
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=1138777946]
+polygon = PackedVector2Array(-4, 0, 4, 0, 0, 7)

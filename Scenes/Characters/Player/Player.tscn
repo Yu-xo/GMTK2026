@@ -21,3 +21,5 @@ scale = Vector2(0.375, 0.359375)
 texture = ExtResource("1_no7dv")
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=612158831]
+
+[node name="PlayerUpgradeSystem" type="Node" parent="." unique_id=1687560718]

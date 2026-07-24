@@ -1,8 +1,72 @@
 [gd_scene format=3 uid="uid://be7k5ypbb0km0"]
 
 [ext_resource type="PackedScene" uid="uid://dbw1o7k57og33" path="res://Scenes/Characters/Player/Player.tscn" id="1_p8rbg"]
+[ext_resource type="Script" uid="uid://ukxbtqr3hbb0" path="res://Scripts/upgrade_panel_holder.gd" id="2_qtv3y"]
+[ext_resource type="Script" uid="uid://lhnxy8ietk7p" path="res://Scripts/UpgardeInformation.gd" id="3_o8wgc"]
+[ext_resource type="Resource" uid="uid://c7d6872o1kbgd" path="res://Data/AoEDmg.tres" id="4_hkvnm"]
+[ext_resource type="Resource" uid="uid://dn4g4wddb8qyx" path="res://Data/HPboost.tres" id="4_w20t6"]
+[ext_resource type="Resource" uid="uid://c4vyb05p56vxe" path="res://Data/DashAbility.tres" id="5_5ci8a"]
+[ext_resource type="Resource" uid="uid://bwximxwpp02ai" path="res://Data/SpeedBoost.tres" id="5_aw1lf"]
+[ext_resource type="Resource" uid="uid://c12h3stj86gsc" path="res://Data/DoubleProjectile.tres" id="6_18xdc"]
+[ext_resource type="PackedScene" uid="uid://bs1e6rjc61nec" path="res://Scenes/EnemySpawner/EnemySpawner.tscn" id="6_w20t6"]
+[ext_resource type="Resource" uid="uid://bclyvn85738oa" path="res://Data/ExpTimer.tres" id="7_epx8f"]
+[ext_resource type="Resource" uid="uid://bph05am67pljy" path="res://Data/ShiledAbility.tres" id="9_hcu3t"]
+[ext_resource type="Resource" uid="uid://c4p4yixcjuj3n" path="res://Data/SpikeProjectile.tres" id="11_qdkat"]
+[ext_resource type="Resource" uid="uid://dw3rl8m7gi2d4" path="res://Data/ThrowRange.tres" id="12_udh0u"]
+[ext_resource type="Resource" uid="uid://qbb74mnx5q5r" path="res://Data/Volly.tres" id="13_xggvw"]
 
 [node name="Main" type="Node" unique_id=1359459859]
 
 [node name="Player" parent="." unique_id=1541806321 instance=ExtResource("1_p8rbg")]
 position = Vector2(334, 215)
+
+[node name="UpgradePanelHolder" type="Control" parent="." unique_id=110452459 node_paths=PackedStringArray("_name", "effect", "button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_qtv3y")
+_name = NodePath("Panel/Name")
+effect = NodePath("Panel/Effect")
+button = NodePath("Panel/Button")
+UpgradeInfo = Array[ExtResource("3_o8wgc")]([ExtResource("4_hkvnm"), ExtResource("5_5ci8a"), ExtResource("6_18xdc"), ExtResource("7_epx8f"), ExtResource("4_w20t6"), ExtResource("9_hcu3t"), ExtResource("5_aw1lf"), ExtResource("11_qdkat"), ExtResource("12_udh0u"), ExtResource("13_xggvw")])
+
+[node name="Panel" type="Panel" parent="UpgradePanelHolder" unique_id=1832018278]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -121.0
+offset_top = -159.0
+offset_right = 121.0
+offset_bottom = 159.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Name" type="Label" parent="UpgradePanelHolder/Panel" unique_id=1875082795]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 73.0
+offset_right = 147.0
+offset_bottom = 96.0
+
+[node name="Effect" type="Label" parent="UpgradePanelHolder/Panel" unique_id=1842577729]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 171.0
+offset_right = 147.0
+offset_bottom = 194.0
+
+[node name="Button" type="Button" parent="UpgradePanelHolder/Panel" unique_id=184678601]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 328.0
+offset_right = 160.0
+offset_bottom = 359.0
+text = "Accept"
+
+[node name="EnemySpawner" parent="." unique_id=1827537512 instance=ExtResource("6_w20t6")]

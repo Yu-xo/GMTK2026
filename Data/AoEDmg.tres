@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="UpgardeInformation" format=3 uid="uid://c7d6872o1kbgd"]
+
+[ext_resource type="Script" uid="uid://lhnxy8ietk7p" path="res://Scripts/UpgardeInformation.gd" id="1_ropmb"]
+
+[resource]
+script = ExtResource("1_ropmb")
+Type = 8
+area_of_dmg = 100.0
+metadata/_custom_type_script = "uid://lhnxy8ietk7p"
