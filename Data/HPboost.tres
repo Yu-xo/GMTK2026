@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="UpgardeInformation" format=3 uid="uid://dn4g4wddb8qyx"]
+[gd_resource type="Resource" script_class="UpgradeRes" format=3 uid="uid://dn4g4wddb8qyx"]
 
-[ext_resource type="Script" uid="uid://lhnxy8ietk7p" path="res://Scripts/UpgardeInformation.gd" id="1_86hqb"]
+[ext_resource type="Script" uid="uid://dbu26i1iinwcm" path="res://Resources/UpgradeResources.gd" id="1_aumy1"]
 
 [resource]
-script = ExtResource("1_86hqb")
-hp = 5
-metadata/_custom_type_script = "uid://lhnxy8ietk7p"
+script = ExtResource("1_aumy1")
+_name = "HP Boost"
+Info = "Player Max hp +1"
+UPhp = 1
+metadata/_custom_type_script = "uid://dbu26i1iinwcm"

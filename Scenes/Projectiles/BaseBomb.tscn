@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://cbi3mprcowhvj"]
+
+[ext_resource type="Script" uid="uid://8dwan223y2le" path="res://Scripts/BaseBomb.gd" id="1_lydrk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_o4lsc"]
+resource_local_to_scene = true
+
+[sub_resource type="Animation" id="Animation_vk34u"]
+resource_name = "Explode"
+length = 0.67
+
+[sub_resource type="Animation" id="Animation_lydrk"]
+length = 0.001
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_88hkj"]
+_data = {
+&"Explode": SubResource("Animation_vk34u"),
+&"RESET": SubResource("Animation_lydrk")
+}
+
+[node name="Area2D" type="Area2D" unique_id=567037619]
+script = ExtResource("1_lydrk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1854388100]
+shape = SubResource("CircleShape2D_o4lsc")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1809202824]
+libraries/ = SubResource("AnimationLibrary_88hkj")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

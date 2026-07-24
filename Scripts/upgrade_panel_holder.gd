@@ -1,134 +1,108 @@
 extends Control
 
-var current_upgrade
+@onready var panels := [
+	$Panel,
+	$Panel2,
+	$Panel3
+]
 
-@export var _name: Label
-@export var effect: Label
-@export var button: Button
+@onready var name_labels := [
+	$Panel/Name,
+	$Panel2/Name,
+	$Panel3/Name
+]
 
-@export var UpgradeInfo: Array[UpgardeInformation]
+@onready var effect_labels := [
+	$Panel/Effect,
+	$Panel2/Effect,
+	$Panel3/Effect
+]
+
+@onready var buttons := [
+	$Panel/Button,
+	$Panel2/Button2,
+	$Panel3/Button3
+]
+
+@export var upgrade_info : Array[UpgradeRes]
+
+@onready var player = get_tree().get_first_node_in_group("player")
+
+var current_upgrades : Array[UpgradeRes] = []
 
 
 func _ready() -> void:
-	UpgradeInfo.shuffle()
-	current_upgrade = UpgradeInfo.pop_at(0)
+	randomize()
 
-	print(current_upgrade)
+	for i in range(buttons.size()):
+		buttons[i].pressed.connect(func(): _on_upgrade_selected(i))
 
-	button.pressed.connect(_on_button_pressed)
-
-	_update_upgrade_ui()
+	open_upgrade_screen()
 
 
-func _update_upgrade_ui():
+func open_upgrade_screen():
+	visible = true
 
-	match current_upgrade.Type:
+	current_upgrades.clear()
 
-		UpgardeInformation.AbilityType.HPBOOST:
-			_name.text = "HP Boost"
-			effect.text = "+" + str(current_upgrade.hp) + " Max HP"
+	var available := upgrade_info.duplicate()
+	available.shuffle()
 
-		UpgardeInformation.AbilityType.SPEEDBOOST:
-			_name.text = "Speed Boost"
-			effect.text = "+" + str(current_upgrade.speed) + " Speed"
+	for i in range(3):
+		if i < available.size():
+			current_upgrades.append(available[i])
+		else:
+			current_upgrades.append(null)
 
-		UpgardeInformation.AbilityType.DASHABILITY:
-			_name.text = "Dash Ability"
-			effect.text = "Unlock Dash\n+" + str(current_upgrade.dash_speed) + " Dash Speed"
-
-		UpgardeInformation.AbilityType.THROWRANGE:
-			_name.text = "Throw Range"
-			effect.text = "+" + str(current_upgrade.throw_range) + " Throw Range"
-
-		UpgardeInformation.AbilityType.SHIELDEFFECT:
-			_name.text = "Shield"
-			effect.text = "Unlock Shield\n+" + str(current_upgrade.shield_duration) + "s Duration"
-
-		UpgardeInformation.AbilityType.VOLLYPROJECTILE:
-			_name.text = "Volley Projectile"
-			effect.text = "+" + str(current_upgrade.volly_count) + " Projectiles"
-
-		UpgardeInformation.AbilityType.DOUBLEPROJECTILE:
-			_name.text = "Double Projectile"
-			effect.text = "Throw Two Bombs"
-
-		UpgardeInformation.AbilityType.SPIKEPROJECTILE:
-			_name.text = "Spike Projectile"
-			effect.text = "+" + str(current_upgrade.number_of_spikes) + " Spikes"
-
-		UpgardeInformation.AbilityType.BURSTPROJECTILE:
-			_name.text = "Burst Projectile"
-			effect.text = "+" + str(current_upgrade.area_of_dmg) + " Explosion Radius"
-
-		UpgardeInformation.AbilityType.EXPLOSIONTIMER:
-			_name.text = "Explosion Timer"
-			effect.text = "-" + str(current_upgrade.explosiontimer) + "s Explosion Delay"
+	_update_labels()
 
 
-func _on_button_pressed():
+func _update_labels():
+	for i in range(3):
 
-	match current_upgrade.Type:
+		if current_upgrades[i] == null:
+			panels[i].visible = false
+			continue
 
-		UpgardeInformation.AbilityType.HPBOOST:
-			StatEffects.max_hp += current_upgrade.hp
+		panels[i].visible = true
 
-			print("HP Upgrade Applied!")
-			print("Current Max HP:", StatEffects.max_hp)
+		name_labels[i].text = current_upgrades[i]._name
+		effect_labels[i].text = current_upgrades[i].Info
 
-		UpgardeInformation.AbilityType.SPEEDBOOST:
-			StatEffects.speed += current_upgrade.speed
 
-			print("Speed Upgrade Applied!")
-			print("Current Speed:", StatEffects.speed)
+func _on_upgrade_selected(index: int):
 
-		UpgardeInformation.AbilityType.DASHABILITY:
-			StatEffects.unlock_dash = true
-			StatEffects.dash_speed += current_upgrade.dash_speed
-			StatEffects.dash_duration += current_upgrade.dash_duration
-			StatEffects.dash_cooldown -= current_upgrade.dash_cooldown
+	var upgrade = current_upgrades[index]
 
-			print("Dash Ability Unlocked!")
+	if upgrade == null:
+		return
 
-		UpgardeInformation.AbilityType.THROWRANGE:
-			StatEffects.throw_range += current_upgrade.throw_range
+	match upgrade.Type:
 
-			print("Throw Range Increased!")
-			print("Current Throw Range:", StatEffects.throw_range)
+		UpgradeRes.UpgardeTypes.HPBOOST:
+			UpgardeEffects.max_hp += upgrade.UPhp
 
-		UpgardeInformation.AbilityType.SHIELDEFFECT:
-			StatEffects.unlock_shield = true
-			StatEffects.shield_duration += current_upgrade.shield_duration
-			StatEffects.shield_cooldown -= current_upgrade.shield_cooldown
+		UpgradeRes.UpgardeTypes.SPEEDBOOST:
+			UpgardeEffects.max_speed += upgrade.UPspeed
 
-			print("Shield Ability Unlocked!")
+		UpgradeRes.UpgardeTypes.DASHCD:
+			UpgardeEffects.dash_cooldown += upgrade.UPdash_cooldown
 
-		UpgardeInformation.AbilityType.VOLLYPROJECTILE:
-			StatEffects.volley_count += current_upgrade.volly_count
+		UpgradeRes.UpgardeTypes.DASHLENG:
+			UpgardeEffects.dash_distance += upgrade.UPdash_distance
 
-			print("Volley Upgrade Applied!")
-			print("Volley Count:", StatEffects.volley_count)
+		UpgradeRes.UpgardeTypes.BOMBCOUNT:
+			UpgardeEffects.bomb_count += upgrade.UPbomb_count
 
-		UpgardeInformation.AbilityType.DOUBLEPROJECTILE:
-			StatEffects.double_projectile = true
+		UpgradeRes.UpgardeTypes.BOMBDROPRATE:
+			UpgardeEffects.bomb_drop_rate += upgrade.UPbomb_drop_rate
 
-			print("Double Projectile Unlocked!")
+		UpgradeRes.UpgardeTypes.BOMBRADIUS:
+			UpgardeEffects.explosion_radius += upgrade.UPexplosion_radius
 
-		UpgardeInformation.AbilityType.SPIKEPROJECTILE:
-			StatEffects.number_of_spikes += current_upgrade.number_of_spikes
+		UpgradeRes.UpgardeTypes.BOMBDMG:
+			UpgardeEffects.max_dmg += upgrade.UPmax_dmg
 
-			print("Spike Projectile Upgraded!")
-			print("Spike Count:", StatEffects.number_of_spikes)
+	player._update_stats()
 
-		UpgardeInformation.AbilityType.BURSTPROJECTILE:
-			StatEffects.burst_area += current_upgrade.area_of_dmg
-
-			print("Burst Area Increased!")
-			print("Current Burst Area:", StatEffects.burst_area)
-
-		UpgardeInformation.AbilityType.EXPLOSIONTIMER:
-			StatEffects.explosion_timer -= current_upgrade.explosiontimer
-
-			print("Explosion Timer Reduced!")
-			print("Current Explosion Timer:", StatEffects.explosion_timer)
-
-	queue_free()
+	visible = false

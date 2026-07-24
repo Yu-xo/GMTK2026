@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-StatEffects="*uid://dxwbx6ap4dj0f"
+UpgardeEffects="*uid://c7i4s3mydncq4"
 
 [display]
 

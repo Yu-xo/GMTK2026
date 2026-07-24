@@ -1,9 +1,11 @@
-[gd_resource type="Resource" script_class="UpgardeInformation" format=3 uid="uid://bwximxwpp02ai"]
+[gd_resource type="Resource" script_class="UpgradeRes" format=3 uid="uid://bwximxwpp02ai"]
 
-[ext_resource type="Script" uid="uid://lhnxy8ietk7p" path="res://Scripts/UpgardeInformation.gd" id="1_mb2fh"]
+[ext_resource type="Script" uid="uid://dbu26i1iinwcm" path="res://Resources/UpgradeResources.gd" id="1_mb2fh"]
 
 [resource]
 script = ExtResource("1_mb2fh")
+_name = "SpeedBoost"
+Info = "Increease Player speed"
 Type = 1
-speed = 300.0
-metadata/_custom_type_script = "uid://lhnxy8ietk7p"
+UPspeed = 100
+metadata/_custom_type_script = "uid://dbu26i1iinwcm"

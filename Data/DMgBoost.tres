@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UpgradeRes" format=3 uid="uid://bcc5ukvkurm1u"]
+
+[ext_resource type="Script" uid="uid://dbu26i1iinwcm" path="res://Resources/UpgradeResources.gd" id="1_2l343"]
+
+[resource]
+script = ExtResource("1_2l343")
+_name = "More Power"
+Info = "Bombs have more  power"
+Type = 7
+UPmax_dmg = 75
+metadata/_custom_type_script = "uid://dbu26i1iinwcm"

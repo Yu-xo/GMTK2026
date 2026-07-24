@@ -2,16 +2,18 @@
 
 [ext_resource type="Script" uid="uid://dymxf0txidqa8" path="res://Scripts/player.gd" id="1_8y2kw"]
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_no7dv"]
-[ext_resource type="PackedScene" uid="uid://bdaqd1dkd1dnu" path="res://Scenes/Projectiles/BombProjectile.tscn" id="2_gqvyu"]
+[ext_resource type="PackedScene" uid="uid://cbi3mprcowhvj" path="res://Scenes/Projectiles/BaseBomb.tscn" id="2_gqvyu"]
+[ext_resource type="Script" uid="uid://be71c366bfdyb" path="res://Scripts/hud_container.gd" id="4_uapsp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8y2kw"]
 size = Vector2(50, 44)
 
-[node name="Player" type="CharacterBody2D" unique_id=1541806321 node_paths=PackedStringArray("Muzzle") groups=["player"]]
+[node name="Player" type="CharacterBody2D" unique_id=1541806321 node_paths=PackedStringArray("Muzzle", "DropRate") groups=["player"]]
 motion_mode = 1
 script = ExtResource("1_8y2kw")
 BombNode = ExtResource("2_gqvyu")
 Muzzle = NodePath("Marker2D")
+DropRate = NodePath("DropRate")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1933693312]
 shape = SubResource("RectangleShape2D_8y2kw")
@@ -23,3 +25,35 @@ texture = ExtResource("1_no7dv")
 [node name="Marker2D" type="Marker2D" parent="." unique_id=612158831]
 
 [node name="PlayerUpgradeSystem" type="Node" parent="." unique_id=1687560718]
+
+[node name="DropRate" type="Timer" parent="." unique_id=1206848865]
+unique_name_in_owner = true
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1368069451]
+
+[node name="HUDContainer" type="Control" parent="HUD" unique_id=1132196429 node_paths=PackedStringArray("HpLabel", "SpeedLable")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_uapsp")
+HpLabel = NodePath("Label")
+SpeedLable = NodePath("Label2")
+
+[node name="Label" type="Label" parent="HUD/HUDContainer" unique_id=1515367670]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 41.0
+offset_right = 76.0
+offset_bottom = 64.0
+text = "Health"
+
+[node name="Label2" type="Label" parent="HUD/HUDContainer" unique_id=1793556578]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 64.0
+offset_right = 76.0
+offset_bottom = 87.0
+text = "speed"

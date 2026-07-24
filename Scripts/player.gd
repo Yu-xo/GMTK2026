@@ -14,51 +14,79 @@ var dir: Vector2
 
 @export var BombNode: PackedScene
 @export var Muzzle: Marker2D
+@export var DropRate: Timer
 
-@export var CircleColor := Color(1, 1, 1, 0.12)
+# Player Stats
+var hp: int
+var move_speed: int
 
-# Dash Settings
+# Dash
 @export var DashSpeed := 450.0
-@export var DashDuration := 0.18
-@export var DashCooldown := 0.6
+var DashDuration: float
+var DashCooldown: float
 
 var can_dash := true
 var is_dashing := false
 var dash_direction := Vector2.ZERO
 
-var aiming := false
-var throw_target: Vector2
+# Bombs
+var drop_cooldown: float
+var number_of_bombs: int
+
+var can_drop := true
 
 
 func _ready() -> void:
-	throw_target = global_position
+	DropRate.timeout.connect(_on_drop_timeout)
+	_update_stats()
 
 
 func _physics_process(delta: float) -> void:
+
 	if is_dashing:
+		velocity = dash_direction * DashSpeed
 		move_and_slide()
 		return
-
-	if aiming:
-		_update_throw_target()
 
 	_state_handler(delta)
 	move_and_slide()
 
-	if aiming:
-		queue_redraw()
+
+func _update_stats() -> void:
+
+	hp = UpgardeEffects.max_hp
+	move_speed = UpgardeEffects.max_speed
+
+	DashCooldown = UpgardeEffects.dash_cooldown
+	DashDuration = UpgardeEffects.dash_distance
+
+	number_of_bombs = UpgardeEffects.bomb_count
+	drop_cooldown = UpgardeEffects.bomb_drop_rate
+
+	print("========== PLAYER STATS ==========")
+	print("HP:", hp)
+	print("Speed:", move_speed)
+	print("Dash Cooldown:", DashCooldown)
+	print("Dash Duration:", DashDuration)
+	print("Bomb Count:", number_of_bombs)
+	print("Bomb Cooldown:", drop_cooldown)
+	print("Bomb Damage:", UpgardeEffects.max_dmg)
+	print("Explosion Radius:", UpgardeEffects.explosion_radius)
+	print("==================================")
 
 
 func _state_handler(delta):
+
 	match current_state:
+
 		States.IDLE:
 			_idle_state()
 
 		States.MOVE:
-			_movemovet_state()
+			_move_state()
 
 		States.ATTACK:
-			pass
+			_drop_bomb()
 
 		States.HURT:
 			pass
@@ -68,38 +96,17 @@ func _state_handler(delta):
 
 
 func _input(event):
-	# Dash
-	if event.is_action_pressed("dash"):
-		if StatEffects.unlock_dash:
-			_start_dash()
 
-	# Throw Bomb
-	if event.is_action_pressed("attack"):
-		aiming = true
+	if event.is_action_pressed("dash") and can_dash:
+		_start_dash()
+
+	if event.is_action_pressed("attack") and can_drop:
 		current_state = States.ATTACK
-		queue_redraw()
-
-	elif event.is_action_released("attack"):
-
-		if aiming:
-			aiming = false
-
-			var bomb = BombNode.instantiate()
-			bomb.global_position = Muzzle.global_position
-			bomb.target_pos = throw_target
-
-			get_parent().add_child(bomb)
-
-			current_state = States.IDLE
-			queue_redraw()
 
 
 func _idle_state():
-	if aiming:
-		velocity = Vector2.ZERO
-		return
 
-	dir = Input.get_vector("left", "right", "up", "down")
+	dir = Input.get_vector("left","right","up","down")
 
 	if dir != Vector2.ZERO:
 		current_state = States.MOVE
@@ -107,14 +114,11 @@ func _idle_state():
 		velocity = Vector2.ZERO
 
 
-func _movemovet_state():
-	if aiming:
-		velocity = Vector2.ZERO
-		return
+func _move_state():
 
-	dir = Input.get_vector("left", "right", "up", "down")
+	dir = Input.get_vector("left","right","up","down")
 
-	velocity = dir * StatEffects.speed
+	velocity = dir * move_speed
 
 	if dir == Vector2.ZERO:
 		current_state = States.IDLE
@@ -128,16 +132,13 @@ func _start_dash():
 	can_dash = false
 	is_dashing = true
 
-	dash_direction = Input.get_vector("left", "right", "up", "down")
+	dash_direction = Input.get_vector("left","right","up","down")
 
 	if dash_direction == Vector2.ZERO:
 		dash_direction = Vector2.RIGHT
 
-	velocity = dash_direction.normalized() * DashSpeed
-
 	await get_tree().create_timer(DashDuration).timeout
 
-	velocity = Vector2.ZERO
 	is_dashing = false
 
 	await get_tree().create_timer(DashCooldown).timeout
@@ -145,39 +146,26 @@ func _start_dash():
 	can_dash = true
 
 
-func _update_throw_target():
-	var mouse = get_global_mouse_position()
+func _drop_bomb():
 
-	var offset = mouse - global_position
+	can_drop = false
 
-	if offset.length() > StatEffects.throw_range:
-		offset = offset.normalized() * StatEffects.throw_range
+	for i in range(number_of_bombs):
 
-	throw_target = global_position + offset
+		var bomb = BombNode.instantiate()
+
+		bomb.global_position = Muzzle.global_position
+
+		# Pass upgraded stats
+		bomb.max_damage = UpgardeEffects.max_dmg
+		bomb.explosion_radius = UpgardeEffects.explosion_radius
+
+		get_tree().current_scene.add_child(bomb)
+
+	DropRate.start(drop_cooldown)
+
+	current_state = States.IDLE
 
 
-func _draw():
-	if !aiming:
-		return
-
-	draw_circle(
-		Vector2.ZERO,
-		StatEffects.throw_range,
-		CircleColor
-	)
-
-	draw_arc(
-		Vector2.ZERO,
-		StatEffects.throw_range,
-		0,
-		TAU,
-		72,
-		Color.WHITE,
-		2.0
-	)
-
-	draw_circle(
-		to_local(throw_target),
-		8,
-		Color.RED
-	)
+func _on_drop_timeout():
+	can_drop = true

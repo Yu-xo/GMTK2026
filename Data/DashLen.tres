@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UpgradeRes" format=3 uid="uid://ct6if0pvbt0us"]
+
+[ext_resource type="Script" uid="uid://dbu26i1iinwcm" path="res://Resources/UpgradeResources.gd" id="1_6mdxy"]
+
+[resource]
+script = ExtResource("1_6mdxy")
+_name = "Long Step"
+Info = "Dash Distance"
+Type = 3
+UPdash_distance = 1.0
+metadata/_custom_type_script = "uid://dbu26i1iinwcm"

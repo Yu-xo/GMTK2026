@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="UpgardeInformation" format=3 uid="uid://qbb74mnx5q5r"]
-
-[ext_resource type="Script" uid="uid://lhnxy8ietk7p" path="res://Scripts/UpgardeInformation.gd" id="1_fidtv"]
-
-[resource]
-script = ExtResource("1_fidtv")
-Type = 5
-volly_count = 1
-metadata/_custom_type_script = "uid://lhnxy8ietk7p"

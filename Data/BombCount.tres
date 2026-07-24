@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UpgradeRes" format=3 uid="uid://ddryxia3wlga5"]
+
+[ext_resource type="Script" uid="uid://dbu26i1iinwcm" path="res://Resources/UpgradeResources.gd" id="1_7u2m5"]
+
+[resource]
+script = ExtResource("1_7u2m5")
+_name = "More Space"
+Info = "Player Have one  more Bomb "
+Type = 4
+UPbomb_count = 1
+metadata/_custom_type_script = "uid://dbu26i1iinwcm"

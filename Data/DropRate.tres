@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UpgradeRes" format=3 uid="uid://gxrj2bjlq1lp"]
+
+[ext_resource type="Script" uid="uid://dbu26i1iinwcm" path="res://Resources/UpgradeResources.gd" id="1_m4qbw"]
+
+[resource]
+script = ExtResource("1_m4qbw")
+_name = "Drop Rate"
+Info = "Player Can drop \\n bomb more often"
+Type = 5
+UPbomb_drop_rate = -0.08
+metadata/_custom_type_script = "uid://dbu26i1iinwcm"
