@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://dbu26i1iinwcm" path="res://Resources/UpgradeResources.gd" id="4_o8wgc"]
 [ext_resource type="Resource" uid="uid://bwximxwpp02ai" path="res://Data/SpeedBoost.tres" id="5_aw1lf"]
 [ext_resource type="Resource" uid="uid://dn4g4wddb8qyx" path="res://Data/HPBoost.tres" id="5_w20t6"]
-[ext_resource type="PackedScene" uid="uid://bs1e6rjc61nec" path="res://Scenes/EnemySpawner/EnemySpawner.tscn" id="6_w20t6"]
 [ext_resource type="Resource" uid="uid://ddryxia3wlga5" path="res://Data/BombCount.tres" id="7_wgovn"]
 [ext_resource type="Resource" uid="uid://cvdag3kln3m7c" path="res://Data/DashCD.tres" id="8_cv8e0"]
 [ext_resource type="Resource" uid="uid://ct6if0pvbt0us" path="res://Data/DashLen.tres" id="9_hkvnm"]
@@ -17,8 +16,6 @@
 
 [node name="Player" parent="." unique_id=1541806321 instance=ExtResource("1_p8rbg")]
 position = Vector2(334, 215)
-
-[node name="EnemySpawner" parent="." unique_id=1827537512 instance=ExtResource("6_w20t6")]
 
 [node name="UpgradeUI" type="CanvasLayer" parent="." unique_id=800298322]
 
@@ -154,3 +151,9 @@ offset_top = 330.0
 offset_right = 154.0
 offset_bottom = 361.0
 text = "Accept"
+
+[node name="Timer" type="Timer" parent="UpgradeUI" unique_id=1867406940]
+wait_time = 5.0
+autostart = true
+
+[connection signal="timeout" from="UpgradeUI/Timer" to="UpgradeUI/UpgradePanelHolder" method="_on_timer_timeout"]
