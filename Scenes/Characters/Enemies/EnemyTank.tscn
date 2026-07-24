@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://udbwv1trouo1"]
+
+[ext_resource type="Script" uid="uid://dnwjeuhtuyy07" path="res://Scripts/enemy.gd" id="1_gg154"]
+[ext_resource type="Script" uid="uid://co1jxn5afii0q" path="res://Resources/enemy_res.gd" id="2_21s23"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="3_48e41"]
+
+[sub_resource type="Resource" id="Resource_v4mj0"]
+resource_local_to_scene = true
+script = ExtResource("2_21s23")
+enemy_type = 2
+metadata/_custom_type_script = "uid://co1jxn5afii0q"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mchqt"]
+size = Vector2(46, 44)
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=736836025]
+script = ExtResource("1_gg154")
+enemy_res = SubResource("Resource_v4mj0")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=74667065]
+scale = Vector2(0.375, 0.359375)
+texture = ExtResource("3_48e41")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1363086789]
+shape = SubResource("RectangleShape2D_mchqt")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1880084123]
