@@ -5,6 +5,7 @@ signal enemy_died
 @export var OrbNode  = preload("res://Scenes/Obejcts/Orbs.tscn")
 @export var enemy_res: EnemyResource
 @onready var player:CharacterBody2D = get_tree().get_first_node_in_group("player")
+@onready var enemy_spawner: Node2D = get_tree().get_first_node_in_group("enemy_spawner")
 @export var projectile_scene: PackedScene
 
 var move_direction: Vector2
@@ -16,6 +17,11 @@ func _ready() -> void:
 	match enemy_res.enemy_type:
 		enemy_res.EnemyType.RANGE:
 			$ShotCooldownTimer.wait_time = enemy_res.shot_cooldown
+			$RepositionTimer.wait_time = enemy_res.reposition_time
+			
+	match enemy_res.enemy_type:
+		enemy_res.EnemyType.TANK:
+			$RushCooldownTimer.wait_time = enemy_res.rush_cooldown
 			$RepositionTimer.wait_time = enemy_res.reposition_time
 
 
@@ -43,7 +49,10 @@ func _take_damage(damage_value: int) -> void:
 	if enemy_res.hp <= 0:
 		enemy_died.emit()
 		_spawn_orb()
+		if enemy_spawner.has_method("_enemy_killed") :
+			enemy_spawner._enemy_killed(self)
 		queue_free()
+
 
 func _ai() -> void:
 	match enemy_res.enemy_type:
@@ -51,7 +60,6 @@ func _ai() -> void:
 			_ai_melee()
 		
 		enemy_res.EnemyType.RANGE:
-			#print(enemy_res.enemy_state)
 			_ai_range()
 			
 		enemy_res.EnemyType.TANK:
@@ -114,11 +122,36 @@ func _ai_tank() -> void:
 		enemy_res.EnemyState.IDLE:
 			velocity = Vector2.ZERO
 
-	
 		enemy_res.EnemyState.CHASE:
-			move_direction = (player.position - position).normalized()
-			velocity = (move_direction * enemy_res.movespeed) + push_velocity
+			if (player.position - position).length() > enemy_res.chase_range * randf_range(0.75, 1.0):
+				move_direction = (player.position - position).normalized()
+				velocity = (move_direction * enemy_res.movespeed) + push_velocity
+				
+			else:
+				enemy_res.rush_position = player.position + ((player.position - position).normalized() * 50)
+				enemy_res.enemy_state = enemy_res.EnemyState.ATTACK
 		
+		enemy_res.EnemyState.ATTACK:
+			if enemy_res.can_rush:
+				if (enemy_res.rush_position - position).length() > enemy_res.rush_range * randf_range(0.75, 1.0):
+					move_direction = (enemy_res.rush_position - position).normalized()
+					velocity = (move_direction * enemy_res.rush_speed)
+			
+				else:
+					enemy_res.can_rush = false
+					enemy_res.enemy_state = enemy_res.EnemyState.REPOSITION
+					$RushCooldownTimer.start()
+					$RepositionTimer.start()
+					enemy_res.reposition_target = position + Vector2(1 * randf_range(-500, 500), 1 * randf_range(-500, 500))
+			else:
+				enemy_res.enemy_state = enemy_res.EnemyState.REPOSITION
+				if $RepositionTimer.is_stopped():
+					$RepositionTimer.start()
+					enemy_res.reposition_target = position + Vector2(1 * randf_range(-50, 50), 1 * randf_range(-50, 50))
+		
+		enemy_res.EnemyState.REPOSITION:
+			move_direction = (enemy_res.reposition_target - position).normalized()
+			velocity = (move_direction * enemy_res.movespeed) + push_velocity
 
 
 
@@ -129,3 +162,7 @@ func _on_shot_cooldown_timer_timeout() -> void:
 
 func _on_reposition_timer_timeout() -> void:
 	enemy_res.enemy_state = enemy_res.EnemyState.CHASE
+
+
+func _on_rush_cooldown_timer_timeout() -> void:
+	enemy_res.can_rush = true

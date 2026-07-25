@@ -11,6 +11,9 @@ position = Vector2(334, 215)
 
 [node name="EnemySpawner" parent="." unique_id=1827537512 instance=ExtResource("2_wgpax")]
 position = Vector2(588, 40)
+melee_wave = Array[int]([3, 2, 3])
+range_wave = Array[int]([2, 2, 2])
+tank_wave = Array[int]([2, 0, 3])
 
 [node name="Marker2D" parent="." unique_id=243309589 instance=ExtResource("3_8l0as")]
 position = Vector2(210, 560)

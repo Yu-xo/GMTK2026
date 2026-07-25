@@ -8,6 +8,8 @@
 resource_local_to_scene = true
 script = ExtResource("2_21s23")
 enemy_type = 2
+chase_range = 1000
+reposition_time = 5.0
 metadata/_custom_type_script = "uid://co1jxn5afii0q"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mchqt"]
@@ -26,3 +28,12 @@ texture = ExtResource("3_48e41")
 shape = SubResource("RectangleShape2D_mchqt")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1880084123]
+
+[node name="RushCooldownTimer" type="Timer" parent="." unique_id=2118982853]
+one_shot = true
+
+[node name="RepositionTimer" type="Timer" parent="." unique_id=1119887821]
+one_shot = true
+
+[connection signal="timeout" from="RushCooldownTimer" to="." method="_on_rush_cooldown_timer_timeout"]
+[connection signal="timeout" from="RepositionTimer" to="." method="_on_reposition_timer_timeout"]

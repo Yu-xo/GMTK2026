@@ -2,7 +2,7 @@ extends Node
 class_name UpgardeEffect
 
 var max_hp: int = 3
-var max_speed: int = 100
+var max_speed: int = 200
 
 var dash_cooldown: float = 0.6
 var dash_distance: float = 0.18

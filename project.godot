@@ -30,6 +30,7 @@ player=""
 spawn_marker=""
 ui=""
 orbs=""
+enemy_spawner=""
 
 [input]
 
