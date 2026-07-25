@@ -41,18 +41,21 @@ func _register_spawn_markers() -> void:
 
 func _spawn_enemy(round_param: int) -> void:
 	for i in range(melee_wave[round_param]):
+		await get_tree().create_timer(0.5).timeout
 		var enemy: CharacterBody2D = enemy_scene[0].instantiate()
 		spawned_enemies.append(enemy)
 		enemy.position = _spawn_position()
 		get_parent().add_child.call_deferred(enemy)   # Might need to change get_tree() later
 		
 	for i in range(range_wave[round_param]):
+		await get_tree().create_timer(1).timeout
 		var enemy: CharacterBody2D = enemy_scene[1].instantiate()
 		spawned_enemies.append(enemy)
 		enemy.position = _spawn_position()
 		get_parent().add_child.call_deferred(enemy)   # Might need to change get_tree() later
 	
 	for i in range(tank_wave[round_param]):
+		await get_tree().create_timer(2).timeout
 		var enemy: CharacterBody2D = enemy_scene[2].instantiate()
 		spawned_enemies.append(enemy)
 		enemy.position = _spawn_position()
@@ -67,6 +70,7 @@ func _enemy_killed(enemy:CharacterBody2D) -> void:
 
 
 func _start_next_round(round_param: int) -> void:
+	await get_tree().create_timer(2).timeout
 	_spawn_enemy(round_param)
 
 

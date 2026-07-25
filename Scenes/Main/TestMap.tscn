@@ -7,7 +7,7 @@
 [node name="Main" type="Node" unique_id=1359459859]
 
 [node name="Player" parent="." unique_id=1541806321 instance=ExtResource("1_piqhl")]
-position = Vector2(334, 215)
+position = Vector2(391, 303)
 
 [node name="EnemySpawner" parent="." unique_id=1827537512 instance=ExtResource("2_wgpax")]
 position = Vector2(588, 40)
@@ -19,7 +19,31 @@ tank_wave = Array[int]([2, 0, 3])
 position = Vector2(210, 560)
 
 [node name="Marker2D2" parent="." unique_id=790111024 instance=ExtResource("3_8l0as")]
-position = Vector2(891, 567)
+position = Vector2(1786, 793)
 
 [node name="Marker2D3" parent="." unique_id=1446050172 instance=ExtResource("3_8l0as")]
-position = Vector2(594, 153)
+position = Vector2(931, 428)
+
+[node name="Marker2D4" parent="." unique_id=1116402669 instance=ExtResource("3_8l0as")]
+position = Vector2(1655, 262)
+
+[node name="Marker2D5" parent="." unique_id=824303908 instance=ExtResource("3_8l0as")]
+position = Vector2(864, 1012)
+
+[node name="Marker2D6" parent="." unique_id=1959449043 instance=ExtResource("3_8l0as")]
+position = Vector2(1808, 1123)
+
+[node name="Marker2D7" parent="." unique_id=1892005534 instance=ExtResource("3_8l0as")]
+position = Vector2(1417, 610)
+
+[node name="Marker2D8" parent="." unique_id=2070056052 instance=ExtResource("3_8l0as")]
+position = Vector2(341, 1038)
+
+[node name="Marker2D9" parent="." unique_id=667695198 instance=ExtResource("3_8l0as")]
+position = Vector2(1376, 1100)
+
+[node name="Marker2D10" parent="." unique_id=1180875554 instance=ExtResource("3_8l0as")]
+position = Vector2(1897, 467)
+
+[node name="Marker2D11" parent="." unique_id=1101268114 instance=ExtResource("3_8l0as")]
+position = Vector2(1404, 200)

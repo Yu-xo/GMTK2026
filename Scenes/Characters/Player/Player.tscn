@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_no7dv"]
 [ext_resource type="PackedScene" uid="uid://cbi3mprcowhvj" path="res://Scenes/Projectiles/BaseBomb.tscn" id="2_gqvyu"]
 [ext_resource type="Script" uid="uid://be71c366bfdyb" path="res://Scripts/hud_container.gd" id="4_uapsp"]
+[ext_resource type="Script" uid="uid://bud2im5k33wq7" path="res://Scripts/player_camera.gd" id="5_7vix2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8y2kw"]
 size = Vector2(50, 44)
@@ -73,5 +74,13 @@ max_value = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollectArea" unique_id=958986943]
 shape = SubResource("CircleShape2D_uapsp")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=788493284]
+zoom = Vector2(0.75, 0.75)
+limit_left = 0
+limit_top = 0
+limit_right = 1500
+limit_bottom = 1500
+script = ExtResource("5_7vix2")
 
 [connection signal="area_entered" from="CollectArea" to="." method="_on_collect_area_area_entered"]
