@@ -11,8 +11,6 @@ position = Vector2(334, 215)
 
 [node name="EnemySpawner" parent="." unique_id=1827537512 instance=ExtResource("2_wgpax")]
 position = Vector2(588, 40)
-round_time = 20.0
-spawn_interval_ratio = Array[int]([1, 2, 2])
 
 [node name="Marker2D" parent="." unique_id=243309589 instance=ExtResource("3_8l0as")]
 position = Vector2(210, 560)
