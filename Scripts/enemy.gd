@@ -50,7 +50,21 @@ func _ai_melee() -> void:
 			
 
 func _ai_range() -> void:
-	pass
+	match enemy_res.enemy_state:
+		enemy_res.EnemyState.IDLE:
+			velocity = Vector2.ZERO
+	
+		enemy_res.EnemyState.CHASE:
+			move_direction = (player.position - position).normalized()
+			velocity = (move_direction * enemy_res.movespeed) + push_velocity
+		
 
 func _ai_tank() -> void:
-	pass
+	match enemy_res.enemy_state:
+		enemy_res.EnemyState.IDLE:
+			velocity = Vector2.ZERO
+	
+		enemy_res.EnemyState.CHASE:
+			move_direction = (player.position - position).normalized()
+			velocity = (move_direction * enemy_res.movespeed) + push_velocity
+		

@@ -13,13 +13,14 @@ movespeed = 25
 metadata/_custom_type_script = "uid://co1jxn5afii0q"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mchqt"]
-size = Vector2(46, 44)
+size = Vector2(24, 24)
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=736836025]
 script = ExtResource("1_b35jk")
 enemy_res = SubResource("Resource_v4mj0")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=74667065]
+self_modulate = Color(0.39979684, 0.047820576, 0.9394257, 1)
 scale = Vector2(0.375, 0.359375)
 texture = ExtResource("3_8vgbl")
 

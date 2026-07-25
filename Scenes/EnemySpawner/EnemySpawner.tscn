@@ -4,9 +4,15 @@
 
 [node name="EnemySpawner" type="Node2D" unique_id=1827537512]
 script = ExtResource("1_dnts2")
+enemy_type_ratio = Array[int]([1, 1, 1])
+spawn_interval_ratio = Array[int]([1, 1, 1])
 
-[node name="Timer" type="Timer" parent="." unique_id=1407798015]
+[node name="WaitSpawnTimer" type="Timer" parent="." unique_id=2057680272]
+wait_time = 3.0
+one_shot = true
+
+[node name="SpawnTimer" type="Timer" parent="." unique_id=1407798015]
 wait_time = 2.0
-autostart = true
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="WaitSpawnTimer" to="." method="_on_wait_spawn_timer_timeout"]
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

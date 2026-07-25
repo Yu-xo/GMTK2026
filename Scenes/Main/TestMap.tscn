@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://d3umjwv25y1cp"]
+
+[ext_resource type="PackedScene" uid="uid://dbw1o7k57og33" path="res://Scenes/Characters/Player/Player.tscn" id="1_piqhl"]
+[ext_resource type="PackedScene" uid="uid://bs1e6rjc61nec" path="res://Scenes/EnemySpawner/EnemySpawner.tscn" id="2_wgpax"]
+[ext_resource type="PackedScene" uid="uid://oyvcc75fvess" path="res://Scenes/EnemySpawner/SpawnMarker.tscn" id="3_8l0as"]
+
+[node name="Main" type="Node" unique_id=1359459859]
+
+[node name="Player" parent="." unique_id=1541806321 instance=ExtResource("1_piqhl")]
+position = Vector2(334, 215)
+
+[node name="EnemySpawner" parent="." unique_id=1827537512 instance=ExtResource("2_wgpax")]
+position = Vector2(588, 40)
+round_time = 20.0
+spawn_interval_ratio = Array[int]([1, 2, 2])
+
+[node name="Marker2D" parent="." unique_id=243309589 instance=ExtResource("3_8l0as")]
+position = Vector2(210, 560)
+
+[node name="Marker2D2" parent="." unique_id=790111024 instance=ExtResource("3_8l0as")]
+position = Vector2(891, 567)
+
+[node name="Marker2D3" parent="." unique_id=1446050172 instance=ExtResource("3_8l0as")]
+position = Vector2(594, 153)

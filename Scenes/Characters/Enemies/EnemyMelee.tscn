@@ -12,7 +12,7 @@ movespeed = 75
 metadata/_custom_type_script = "uid://co1jxn5afii0q"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mchqt"]
-size = Vector2(46, 44)
+size = Vector2(24, 24)
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=736836025]
 script = ExtResource("1_ndlei")
