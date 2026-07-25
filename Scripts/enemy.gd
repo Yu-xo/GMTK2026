@@ -1,11 +1,21 @@
 extends CharacterBody2D
 
+signal enemy_died
+
+@export var OrbNode  = preload("res://Scenes/Obejcts/Orbs.tscn")
 @export var enemy_res: EnemyResource
 @onready var player:CharacterBody2D = get_tree().get_first_node_in_group("player")
 
 var move_direction: Vector2
 var push_velocity: Vector2 = Vector2.ZERO
 
+func _ready() -> void:
+	enemy_res = enemy_res.duplicate(true)
+
+func _spawn_orb():
+	var orb  = OrbNode.instantiate()
+	orb.position = self.global_position
+	get_tree().current_scene.add_child(orb)
 
 func _physics_process(_delta: float) -> void:
 	_ai()
@@ -20,12 +30,12 @@ func _hit(damage_value: int, push_str: int, push_dir: Vector2, push_dur: float) 
 	tween.tween_property(self, "push_velocity", Vector2.ZERO, push_dur)
 
 
-
 func _take_damage(damage_value: int) -> void:
 	enemy_res.hp -= damage_value
 	if enemy_res.hp <= 0:
+		enemy_died.emit()
+		_spawn_orb()
 		queue_free()
-
 
 func _ai() -> void:
 	match enemy_res.enemy_type:

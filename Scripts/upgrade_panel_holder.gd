@@ -106,8 +106,8 @@ func _on_upgrade_selected(index: int):
 	player._update_stats()
 
 	visible = false
+	get_tree().paused = false
 
-
-func _on_timer_timeout() -> void:
+func _refresh():
 	open_upgrade_screen()
 	self.visible = true

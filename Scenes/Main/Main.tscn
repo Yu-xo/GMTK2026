@@ -11,15 +11,19 @@
 [ext_resource type="Resource" uid="uid://bcc5ukvkurm1u" path="res://Data/DMgBoost.tres" id="10_5ci8a"]
 [ext_resource type="Resource" uid="uid://gxrj2bjlq1lp" path="res://Data/DropRate.tres" id="11_18xdc"]
 [ext_resource type="Resource" uid="uid://cfn15bsk0cknv" path="res://Data/Explosionzone.tres" id="12_epx8f"]
+[ext_resource type="PackedScene" uid="uid://bs1e6rjc61nec" path="res://Scenes/EnemySpawner/EnemySpawner.tscn" id="12_wgovn"]
 
 [node name="Main" type="Node" unique_id=1359459859]
 
-[node name="Player" parent="." unique_id=1541806321 instance=ExtResource("1_p8rbg")]
+[node name="Player" parent="." unique_id=1541806321 node_paths=PackedStringArray("UpgradeUI") instance=ExtResource("1_p8rbg")]
 position = Vector2(334, 215)
+UpgradeUI = NodePath("../UpgradeUI/UpgradePanelHolder")
 
 [node name="UpgradeUI" type="CanvasLayer" parent="." unique_id=800298322]
 
-[node name="UpgradePanelHolder" type="Control" parent="UpgradeUI" unique_id=1239043610]
+[node name="UpgradePanelHolder" type="Control" parent="UpgradeUI" unique_id=1239043610 groups=["ui"]]
+process_mode = 3
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -152,8 +156,4 @@ offset_right = 154.0
 offset_bottom = 361.0
 text = "Accept"
 
-[node name="Timer" type="Timer" parent="UpgradeUI" unique_id=1867406940]
-wait_time = 5.0
-autostart = true
-
-[connection signal="timeout" from="UpgradeUI/Timer" to="UpgradeUI/UpgradePanelHolder" method="_on_timer_timeout"]
+[node name="EnemySpawner" parent="." unique_id=1827537512 instance=ExtResource("12_wgovn")]

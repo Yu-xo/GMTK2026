@@ -11,10 +11,19 @@ enum States {
 var current_state = States.IDLE
 
 var dir: Vector2
+var player_level: int = 0
 
 @export var BombNode: PackedScene
 @export var Muzzle: Marker2D
 @export var DropRate: Timer
+
+@export var CollectArea: Area2D
+@export var exp_bar: ProgressBar
+
+@export var UpgradeUI: Control
+
+# EXP
+var exp_points: int = 0
 
 # Player Stats
 var hp: int
@@ -22,6 +31,7 @@ var move_speed: int
 
 # Dash
 @export var DashSpeed := 450.0
+
 var DashDuration: float
 var DashCooldown: float
 
@@ -106,7 +116,7 @@ func _input(event):
 
 func _idle_state():
 
-	dir = Input.get_vector("left","right","up","down")
+	dir = Input.get_vector("left", "right", "up", "down")
 
 	if dir != Vector2.ZERO:
 		current_state = States.MOVE
@@ -116,7 +126,7 @@ func _idle_state():
 
 func _move_state():
 
-	dir = Input.get_vector("left","right","up","down")
+	dir = Input.get_vector("left", "right", "up", "down")
 
 	velocity = dir * move_speed
 
@@ -132,7 +142,7 @@ func _start_dash():
 	can_dash = false
 	is_dashing = true
 
-	dash_direction = Input.get_vector("left","right","up","down")
+	dash_direction = Input.get_vector("left", "right", "up", "down")
 
 	if dash_direction == Vector2.ZERO:
 		dash_direction = Vector2.RIGHT
@@ -156,7 +166,6 @@ func _drop_bomb():
 
 		bomb.global_position = Muzzle.global_position
 
-		# Pass upgraded stats
 		bomb.max_damage = UpgardeEffects.max_dmg
 		bomb.explosion_radius = UpgardeEffects.explosion_radius
 
@@ -169,3 +178,28 @@ func _drop_bomb():
 
 func _on_drop_timeout():
 	can_drop = true
+
+
+func _level_up():
+
+	player_level += 1
+
+	exp_bar.value = 0
+	exp_bar.max_value *= 1.5
+
+	get_tree().paused = true
+
+	UpgradeUI.open_upgrade_screen()
+
+
+func _on_collect_area_area_entered(area: Area2D) -> void:
+
+	if !area.is_in_group("orbs"):
+		return
+
+	exp_bar.value += 1
+
+	area.queue_free()
+
+	if exp_bar.value >= exp_bar.max_value:
+		_level_up()

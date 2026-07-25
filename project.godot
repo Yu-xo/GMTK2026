@@ -28,6 +28,8 @@ window/stretch/aspect="expand"
 
 player=""
 spawn_marker=""
+ui=""
+orbs=""
 
 [input]
 

@@ -8,12 +8,17 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8y2kw"]
 size = Vector2(50, 44)
 
-[node name="Player" type="CharacterBody2D" unique_id=1541806321 node_paths=PackedStringArray("Muzzle", "DropRate") groups=["player"]]
+[sub_resource type="CircleShape2D" id="CircleShape2D_uapsp"]
+radius = 66.068146
+
+[node name="Player" type="CharacterBody2D" unique_id=1541806321 node_paths=PackedStringArray("Muzzle", "DropRate", "CollectArea", "exp_bar") groups=["player"]]
 motion_mode = 1
 script = ExtResource("1_8y2kw")
 BombNode = ExtResource("2_gqvyu")
 Muzzle = NodePath("Marker2D")
 DropRate = NodePath("DropRate")
+CollectArea = NodePath("CollectArea")
+exp_bar = NodePath("HUD/ExpBar")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1933693312]
 shape = SubResource("RectangleShape2D_8y2kw")
@@ -57,3 +62,16 @@ offset_top = 64.0
 offset_right = 76.0
 offset_bottom = 87.0
 text = "speed"
+
+[node name="ExpBar" type="ProgressBar" parent="HUD" unique_id=556139805]
+offset_left = 38.0
+offset_right = 1105.0
+offset_bottom = 27.0
+max_value = 2.0
+
+[node name="CollectArea" type="Area2D" parent="." unique_id=2035955851]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollectArea" unique_id=958986943]
+shape = SubResource("CircleShape2D_uapsp")
+
+[connection signal="area_entered" from="CollectArea" to="." method="_on_collect_area_area_entered"]

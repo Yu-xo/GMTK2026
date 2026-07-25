@@ -4,8 +4,6 @@
 
 [node name="EnemySpawner" type="Node2D" unique_id=1827537512]
 script = ExtResource("1_dnts2")
-enemy_type_ratio = Array[int]([1, 1, 1])
-spawn_interval_ratio = Array[int]([1, 1, 1])
 
 [node name="WaitSpawnTimer" type="Timer" parent="." unique_id=2057680272]
 wait_time = 3.0
