@@ -26,3 +26,6 @@ texture = ExtResource("3_48jod")
 shape = SubResource("RectangleShape2D_mchqt")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1880084123]
+
+[node name="Marker2D" type="Marker2D" parent="." unique_id=734889695]
+position = Vector2(0, -32)

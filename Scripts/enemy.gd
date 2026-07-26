@@ -46,6 +46,7 @@ func _hit(damage_value: int, push_str: int, push_dir: Vector2, push_dur: float) 
 
 func _take_damage(damage_value: int) -> void:
 	enemy_res.hp -= damage_value
+	DamageNumber._display_number(damage_value, $Marker2D.global_position)
 	if enemy_res.hp <= 0:
 		enemy_died.emit()
 		_spawn_orb()

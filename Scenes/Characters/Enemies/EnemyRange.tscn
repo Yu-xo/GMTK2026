@@ -37,5 +37,8 @@ one_shot = true
 [node name="RepositionTimer" type="Timer" parent="." unique_id=1398295444]
 one_shot = true
 
+[node name="Marker2D" type="Marker2D" parent="." unique_id=1767124231]
+position = Vector2(0, -32)
+
 [connection signal="timeout" from="ShotCooldownTimer" to="." method="_on_shot_cooldown_timer_timeout"]
 [connection signal="timeout" from="RepositionTimer" to="." method="_on_reposition_timer_timeout"]
