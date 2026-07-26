@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_2l343")
 _name = "More Power"
-Info = "Bombs have more  power"
+Info = "Packs a heavier punch into your arsenal by significantly increasing the damage dealt by your bomb blasts."
 Type = 7
 UPmax_dmg = 75
 metadata/_custom_type_script = "uid://dbu26i1iinwcm"

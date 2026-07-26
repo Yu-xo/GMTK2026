@@ -1,0 +1,259 @@
+[gd_scene format=3 uid="uid://cvewnspltwaul"]
+
+[ext_resource type="Script" uid="uid://ukxbtqr3hbb0" path="res://Scripts/upgrade_panel_holder.gd" id="1_2o4g6"]
+[ext_resource type="FontFile" uid="uid://b3t1uvw32ff76" path="res://Assets/Fonts/static/WinkyRough-Bold.ttf" id="1_nhgha"]
+[ext_resource type="Script" uid="uid://dbu26i1iinwcm" path="res://Resources/UpgradeResources.gd" id="2_nhgha"]
+[ext_resource type="Resource" uid="uid://bwximxwpp02ai" path="res://Data/SpeedBoost.tres" id="3_cqseh"]
+[ext_resource type="Resource" uid="uid://dn4g4wddb8qyx" path="res://Data/HPBoost.tres" id="4_i4vmm"]
+[ext_resource type="Resource" uid="uid://ddryxia3wlga5" path="res://Data/BombCount.tres" id="5_7rnwv"]
+[ext_resource type="Resource" uid="uid://cvdag3kln3m7c" path="res://Data/DashCD.tres" id="6_u40v8"]
+[ext_resource type="Resource" uid="uid://ct6if0pvbt0us" path="res://Data/DashLen.tres" id="7_7rlor"]
+[ext_resource type="Resource" uid="uid://bcc5ukvkurm1u" path="res://Data/DMgBoost.tres" id="8_iqihp"]
+[ext_resource type="Resource" uid="uid://gxrj2bjlq1lp" path="res://Data/DropRate.tres" id="9_fy4y7"]
+[ext_resource type="Resource" uid="uid://cfn15bsk0cknv" path="res://Data/Explosionzone.tres" id="10_fwbe6"]
+[ext_resource type="Texture2D" uid="uid://btav3i67oftbo" path="res://Assets/UI/CardBackSide.webp" id="12_i4vmm"]
+[ext_resource type="Texture2D" uid="uid://bupmi4duovo2q" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/2403 Sem Título_20260725141943.png" id="13_7rnwv"]
+
+[sub_resource type="Theme" id="Theme_fn2cp"]
+default_font = ExtResource("1_nhgha")
+
+[node name="UpgradePanelHolder" type="Control" unique_id=671205172 node_paths=PackedStringArray("panels", "effect_labels", "buttons", "front_sides", "back_sides") groups=["ui"]]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = SubResource("Theme_fn2cp")
+script = ExtResource("1_2o4g6")
+panels = [NodePath("Panel"), NodePath("Panel2"), NodePath("Panel3")]
+effect_labels = [NodePath("Panel/Effect"), NodePath("Panel2/Effect"), NodePath("Panel3/Effect")]
+buttons = [NodePath("Panel/Button"), NodePath("Panel2/Button2"), NodePath("Panel3/Button3")]
+front_sides = [NodePath("Panel/FrontSide"), NodePath("Panel2/FrontSide"), NodePath("Panel3/FrontSide")]
+back_sides = [NodePath("Panel/BackSide"), NodePath("Panel2/BackSide"), NodePath("Panel3/BackSide")]
+upgrade_info = Array[ExtResource("2_nhgha")]([ExtResource("3_cqseh"), ExtResource("4_i4vmm"), ExtResource("5_7rnwv"), ExtResource("6_u40v8"), ExtResource("7_7rlor"), ExtResource("8_iqihp"), ExtResource("9_fy4y7"), ExtResource("10_fwbe6")])
+
+[node name="Panel" type="Panel" parent="." unique_id=721268244]
+process_mode = 3
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -105.0
+offset_top = -165.0
+offset_right = 105.0
+offset_bottom = 165.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Panel" unique_id=1361531389]
+process_mode = 3
+visible = false
+z_index = 1
+layout_mode = 0
+offset_left = 79.0
+offset_top = 79.0
+offset_right = 119.0
+offset_bottom = 102.0
+text = "Name"
+
+[node name="Button" type="Button" parent="Panel" unique_id=1393142265]
+process_mode = 3
+layout_mode = 0
+offset_left = 79.0
+offset_top = 330.0
+offset_right = 139.0
+offset_bottom = 361.0
+text = "Accept"
+
+[node name="Effect" type="RichTextLabel" parent="Panel" unique_id=101118403]
+process_mode = 3
+z_index = 1
+layout_mode = 0
+offset_left = 14.0
+offset_top = 140.0
+offset_right = 191.0
+offset_bottom = 316.0
+mouse_filter = 2
+bbcode_enabled = true
+text = "Effect
+"
+horizontal_alignment = 1
+
+[node name="FrontSide" type="TextureRect" parent="Panel" unique_id=1270196791]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("12_i4vmm")
+
+[node name="BackSide" type="TextureRect" parent="Panel" unique_id=1103883560]
+process_mode = 3
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("13_7rnwv")
+
+[node name="Panel2" type="Panel" parent="." unique_id=982694538]
+process_mode = 3
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -367.0
+offset_top = -165.0
+offset_right = -157.0
+offset_bottom = 165.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Panel2" unique_id=1859116225]
+process_mode = 3
+visible = false
+z_index = 1
+layout_mode = 0
+offset_left = 79.0
+offset_top = 79.0
+offset_right = 119.0
+offset_bottom = 102.0
+text = "Name"
+
+[node name="Effect" type="RichTextLabel" parent="Panel2" unique_id=2028472834]
+process_mode = 3
+z_index = 1
+layout_mode = 0
+offset_left = 14.0
+offset_top = 140.0
+offset_right = 196.0
+offset_bottom = 316.0
+mouse_filter = 2
+text = "Effect
+"
+horizontal_alignment = 1
+
+[node name="Button2" type="Button" parent="Panel2" unique_id=310353307]
+process_mode = 3
+layout_mode = 0
+offset_left = 60.0
+offset_top = 330.0
+offset_right = 120.0
+offset_bottom = 361.0
+text = "Accept"
+
+[node name="FrontSide" type="TextureRect" parent="Panel2" unique_id=2089006620]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("12_i4vmm")
+
+[node name="BackSide" type="TextureRect" parent="Panel2" unique_id=262018948]
+process_mode = 3
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("13_7rnwv")
+
+[node name="Panel3" type="Panel" parent="." unique_id=2087401955]
+process_mode = 3
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 164.0
+offset_top = -165.0
+offset_right = 374.0
+offset_bottom = 165.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Panel3" unique_id=239381276]
+process_mode = 3
+visible = false
+z_index = 1
+layout_mode = 0
+offset_left = 79.0
+offset_top = 79.0
+offset_right = 119.0
+offset_bottom = 102.0
+text = "Name"
+
+[node name="Effect" type="RichTextLabel" parent="Panel3" unique_id=346760114]
+process_mode = 3
+z_index = 1
+layout_mode = 0
+offset_left = 14.0
+offset_top = 140.0
+offset_right = 198.0
+offset_bottom = 318.0
+mouse_filter = 2
+bbcode_enabled = true
+text = "Effect
+"
+horizontal_alignment = 1
+
+[node name="Button3" type="Button" parent="Panel3" unique_id=1314885437]
+process_mode = 3
+layout_mode = 0
+offset_left = 94.0
+offset_top = 330.0
+offset_right = 154.0
+offset_bottom = 361.0
+text = "Accept"
+
+[node name="FrontSide" type="TextureRect" parent="Panel3" unique_id=1337617429]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+mouse_default_cursor_shape = 1
+texture = ExtResource("12_i4vmm")
+
+[node name="BackSide" type="TextureRect" parent="Panel3" unique_id=862009234]
+process_mode = 3
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+mouse_default_cursor_shape = 1
+texture = ExtResource("13_7rnwv")

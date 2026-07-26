@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_exha6")
 _name = "Reduce Dash Cooldown"
-Info = "Reduce dash cooldown by 0.05 seconds."
+Info = "Enhances your agility by shortening the wait time between dashes, letting you dodge danger much faster."
 Type = 2
 UPdash_cooldown = -0.05
 metadata/_custom_type_script = "uid://dbu26i1iinwcm"

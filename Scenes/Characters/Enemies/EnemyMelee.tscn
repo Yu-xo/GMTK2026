@@ -2,25 +2,100 @@
 
 [ext_resource type="Script" uid="uid://dnwjeuhtuyy07" path="res://Scripts/enemy.gd" id="1_ndlei"]
 [ext_resource type="Script" uid="uid://co1jxn5afii0q" path="res://Resources/enemy_res.gd" id="2_vi0vr"]
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="3_48jod"]
+[ext_resource type="Shader" uid="uid://u17b4xsm82w3" path="res://Shaders/HitEffect.gdshader" id="3_48jod"]
+[ext_resource type="Texture2D" uid="uid://k1cyejudkyqk" path="res://Assets/Characters/Player/MouseWalk.webp" id="3_ndlei"]
+[ext_resource type="Texture2D" uid="uid://cdwxhnu7y5g7e" path="res://Assets/Characters/Player/MouseAttack.webp" id="3_vi0vr"]
 
 [sub_resource type="Resource" id="Resource_v4mj0"]
 resource_local_to_scene = true
 script = ExtResource("2_vi0vr")
-hp = 2
+hp = 6
 movespeed = 75
 metadata/_custom_type_script = "uid://co1jxn5afii0q"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mchqt"]
 size = Vector2(24, 24)
 
-[node name="CharacterBody2D" type="CharacterBody2D" unique_id=736836025]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vqggo"]
+shader = ExtResource("3_48jod")
+shader_parameter/flash_amount = 0.0
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pkpit"]
+atlas = ExtResource("3_vi0vr")
+region = Rect2(0, 0, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4nann"]
+atlas = ExtResource("3_vi0vr")
+region = Rect2(347, 0, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tpuon"]
+atlas = ExtResource("3_vi0vr")
+region = Rect2(0, 347, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a7lqc"]
+atlas = ExtResource("3_vi0vr")
+region = Rect2(347, 347, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vi0vr"]
+atlas = ExtResource("3_ndlei")
+region = Rect2(0, 0, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_48jod"]
+atlas = ExtResource("3_ndlei")
+region = Rect2(347, 0, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b0uvh"]
+atlas = ExtResource("3_ndlei")
+region = Rect2(0, 347, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gp5to"]
+atlas = ExtResource("3_ndlei")
+region = Rect2(347, 347, 347, 347)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o4lsc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pkpit")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4nann")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tpuon")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a7lqc")
+}],
+"loop": 1,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vi0vr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_48jod")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b0uvh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gp5to")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 8.0
+}]
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=736836025 node_paths=PackedStringArray("animate")]
+collision_mask = 0
+motion_mode = 1
 script = ExtResource("1_ndlei")
 enemy_res = SubResource("Resource_v4mj0")
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=74667065]
-scale = Vector2(0.375, 0.359375)
-texture = ExtResource("3_48jod")
+animate = NodePath("AnimatedSprite2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1363086789]
 shape = SubResource("RectangleShape2D_mchqt")
@@ -29,3 +104,10 @@ shape = SubResource("RectangleShape2D_mchqt")
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=734889695]
 position = Vector2(0, -32)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=939879556]
+material = SubResource("ShaderMaterial_vqggo")
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_o4lsc")
+animation = &"attack"
+autoplay = "idle"

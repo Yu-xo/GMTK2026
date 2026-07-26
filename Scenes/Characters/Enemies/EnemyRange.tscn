@@ -2,32 +2,107 @@
 
 [ext_resource type="Script" uid="uid://dnwjeuhtuyy07" path="res://Scripts/enemy.gd" id="1_b35jk"]
 [ext_resource type="Script" uid="uid://co1jxn5afii0q" path="res://Resources/enemy_res.gd" id="2_j6afi"]
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="3_8vgbl"]
 [ext_resource type="PackedScene" uid="uid://doim8d2tnbks4" path="res://Scenes/Projectiles/EnemyProjectile.tscn" id="3_j6afi"]
+[ext_resource type="Texture2D" uid="uid://d2riijei28h63" path="res://Assets/Characters/Player/RangedAttack.webp" id="4_8vgbl"]
+[ext_resource type="Shader" uid="uid://u17b4xsm82w3" path="res://Shaders/HitEffect.gdshader" id="4_45eag"]
+[ext_resource type="Texture2D" uid="uid://dl01rlpepvo0v" path="res://Assets/Characters/Player/RangedWalk.webp" id="5_45eag"]
 
 [sub_resource type="Resource" id="Resource_v4mj0"]
 resource_local_to_scene = true
 script = ExtResource("2_j6afi")
 enemy_type = 1
-hp = 1
+hp = 4
 movespeed = 25
 metadata/_custom_type_script = "uid://co1jxn5afii0q"
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_mchqt"]
-size = Vector2(24, 24)
+[sub_resource type="CircleShape2D" id="CircleShape2D_8vgbl"]
+radius = 32.01562
 
-[node name="CharacterBody2D" type="CharacterBody2D" unique_id=736836025]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b0uvh"]
+shader = ExtResource("4_45eag")
+shader_parameter/flash_amount = 0.0
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ol1ed"]
+atlas = ExtResource("4_8vgbl")
+region = Rect2(0, 0, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u51h5"]
+atlas = ExtResource("4_8vgbl")
+region = Rect2(347, 0, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0qln0"]
+atlas = ExtResource("4_8vgbl")
+region = Rect2(0, 347, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6m0uf"]
+atlas = ExtResource("4_8vgbl")
+region = Rect2(347, 347, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0v4jp"]
+atlas = ExtResource("5_45eag")
+region = Rect2(0, 0, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u1glw"]
+atlas = ExtResource("5_45eag")
+region = Rect2(347, 0, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rs6um"]
+atlas = ExtResource("5_45eag")
+region = Rect2(0, 347, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e1wvs"]
+atlas = ExtResource("5_45eag")
+region = Rect2(347, 347, 347, 347)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o4lsc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ol1ed")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u51h5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0qln0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6m0uf")
+}],
+"loop": 0,
+"name": &"attack",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0v4jp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u1glw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rs6um")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e1wvs")
+}],
+"loop": 1,
+"name": &"walk",
+"speed": 8.0
+}]
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=736836025 node_paths=PackedStringArray("animate")]
+collision_mask = 0
+motion_mode = 1
 script = ExtResource("1_b35jk")
 enemy_res = SubResource("Resource_v4mj0")
 projectile_scene = ExtResource("3_j6afi")
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=74667065]
-self_modulate = Color(0.39979684, 0.047820576, 0.9394257, 1)
-scale = Vector2(0.375, 0.359375)
-texture = ExtResource("3_8vgbl")
+animate = NodePath("AnimatedSprite2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1363086789]
-shape = SubResource("RectangleShape2D_mchqt")
+position = Vector2(0, 7)
+shape = SubResource("CircleShape2D_8vgbl")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1880084123]
 
@@ -39,6 +114,14 @@ one_shot = true
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=1767124231]
 position = Vector2(0, -32)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=771325855]
+material = SubResource("ShaderMaterial_b0uvh")
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_o4lsc")
+animation = &"attack"
+frame = 3
+frame_progress = 1.0
 
 [connection signal="timeout" from="ShotCooldownTimer" to="." method="_on_shot_cooldown_timer_timeout"]
 [connection signal="timeout" from="RepositionTimer" to="." method="_on_reposition_timer_timeout"]

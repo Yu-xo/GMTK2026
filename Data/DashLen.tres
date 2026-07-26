@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_6mdxy")
 _name = "Long Step"
-Info = "Dash Distance"
+Info = "Extends your dodge distance, propelling you further across the field with a single swift movement."
 Type = 3
 UPdash_distance = 0.1
 metadata/_custom_type_script = "uid://dbu26i1iinwcm"

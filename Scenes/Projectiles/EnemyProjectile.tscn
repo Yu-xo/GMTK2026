@@ -1,16 +1,60 @@
 [gd_scene format=3 uid="uid://doim8d2tnbks4"]
 
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_cdf4w"]
 [ext_resource type="Script" uid="uid://cpxgphrankypr" path="res://Scripts/enemy_projectile.gd" id="1_stcsr"]
+[ext_resource type="Texture2D" uid="uid://74jqrw8x4ocq" path="res://Assets/Characters/Player/RangedProjecitle.webp" id="2_stcsr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mchqt"]
 
-[node name="Area2D" type="Area2D" unique_id=1038917338]
-script = ExtResource("1_stcsr")
+[sub_resource type="AtlasTexture" id="AtlasTexture_sjfre"]
+atlas = ExtResource("2_stcsr")
+region = Rect2(0, 0, 220, 220)
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=678139603]
-scale = Vector2(0.15, 0.15)
-texture = ExtResource("1_cdf4w")
+[sub_resource type="AtlasTexture" id="AtlasTexture_n6ngu"]
+atlas = ExtResource("2_stcsr")
+region = Rect2(220, 0, 220, 220)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hxfeh"]
+atlas = ExtResource("2_stcsr")
+region = Rect2(0, 220, 220, 220)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dsmyt"]
+atlas = ExtResource("2_stcsr")
+region = Rect2(220, 220, 220, 220)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o4lsc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sjfre")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n6ngu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hxfeh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dsmyt")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 8.0
+}]
+
+[node name="Area2D" type="Area2D" unique_id=1038917338 node_paths=PackedStringArray("animated_sprite_2d")]
+scale = Vector2(0.2, 0.2)
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_stcsr")
+animated_sprite_2d = NodePath("AnimatedSprite2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=819491088]
 shape = SubResource("RectangleShape2D_mchqt")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1234287319]
+sprite_frames = SubResource("SpriteFrames_o4lsc")
+autoplay = "default"
+frame = 3
+frame_progress = 0.94754755
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

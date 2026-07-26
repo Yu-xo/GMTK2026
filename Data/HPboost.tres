@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_aumy1")
 _name = "HP Boost"
-Info = "Player Max hp +1"
+Info = "Fortifies your resilience on the battlefield by permanently raising your maximum health capacity."
 UPhp = 1
 metadata/_custom_type_script = "uid://dbu26i1iinwcm"

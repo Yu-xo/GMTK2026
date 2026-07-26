@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_7u2m5")
 _name = "More Space"
-Info = "Player Have one  more Bomb "
+Info = "Expands your inventory carrying capacity to carry and deploy an extra bomb into battle simultaneously."
 Type = 4
 UPbomb_count = 1
 metadata/_custom_type_script = "uid://dbu26i1iinwcm"

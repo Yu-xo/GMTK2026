@@ -2,12 +2,13 @@
 
 [ext_resource type="Script" uid="uid://dnwjeuhtuyy07" path="res://Scripts/enemy.gd" id="1_gg154"]
 [ext_resource type="Script" uid="uid://co1jxn5afii0q" path="res://Resources/enemy_res.gd" id="2_21s23"]
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="3_48e41"]
+[ext_resource type="Texture2D" uid="uid://b1qsnv71x0o78" path="res://Assets/Characters/Player/sprite_sheet_2_1.webp" id="4_21s23"]
 
 [sub_resource type="Resource" id="Resource_v4mj0"]
 resource_local_to_scene = true
 script = ExtResource("2_21s23")
 enemy_type = 2
+hp = 12
 chase_range = 1000
 reposition_time = 5.0
 metadata/_custom_type_script = "uid://co1jxn5afii0q"
@@ -15,14 +16,48 @@ metadata/_custom_type_script = "uid://co1jxn5afii0q"
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mchqt"]
 size = Vector2(24, 24)
 
-[node name="CharacterBody2D" type="CharacterBody2D" unique_id=736836025]
+[sub_resource type="AtlasTexture" id="AtlasTexture_48e41"]
+atlas = ExtResource("4_21s23")
+region = Rect2(0, 0, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yaosy"]
+atlas = ExtResource("4_21s23")
+region = Rect2(347, 0, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mxtws"]
+atlas = ExtResource("4_21s23")
+region = Rect2(0, 347, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tvpc6"]
+atlas = ExtResource("4_21s23")
+region = Rect2(347, 347, 347, 347)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o4lsc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_48e41")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yaosy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mxtws")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tvpc6")
+}],
+"loop": 1,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=736836025 node_paths=PackedStringArray("animate")]
+collision_mask = 0
+motion_mode = 1
 script = ExtResource("1_gg154")
 enemy_res = SubResource("Resource_v4mj0")
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=74667065]
-self_modulate = Color(0.8850163, 0.42311645, 0, 1)
-scale = Vector2(0.375, 0.359375)
-texture = ExtResource("3_48e41")
+animate = NodePath("AnimatedSprite2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1363086789]
 shape = SubResource("RectangleShape2D_mchqt")
@@ -37,6 +72,11 @@ one_shot = true
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=595121609]
 position = Vector2(0, -32)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=153468387]
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_o4lsc")
+animation = &"walk"
 
 [connection signal="timeout" from="RushCooldownTimer" to="." method="_on_rush_cooldown_timer_timeout"]
 [connection signal="timeout" from="RepositionTimer" to="." method="_on_reposition_timer_timeout"]

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bp6vxhwpampce"
+path="res://.godot/imported/Luca Lotufo - gameplay theme 5 2026-07-26 12_04_120918276.mp3-da397b0eacac014e1258d6d0cf93c6f3.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/Track/Luca Lotufo - gameplay theme 5 2026-07-26 12_04_120918276.mp3"
+dest_files=["res://.godot/imported/Luca Lotufo - gameplay theme 5 2026-07-26 12_04_120918276.mp3-da397b0eacac014e1258d6d0cf93c6f3.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

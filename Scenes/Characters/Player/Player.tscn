@@ -1,10 +1,18 @@
 [gd_scene format=3 uid="uid://dbw1o7k57og33"]
 
 [ext_resource type="Script" uid="uid://dymxf0txidqa8" path="res://Scripts/player.gd" id="1_8y2kw"]
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_no7dv"]
 [ext_resource type="PackedScene" uid="uid://cbi3mprcowhvj" path="res://Scenes/Projectiles/BaseBomb.tscn" id="2_gqvyu"]
+[ext_resource type="Texture2D" uid="uid://bv2oil3adk8r2" path="res://Assets/Characters/Player/PlayerWalk.webp" id="4_7vix2"]
+[ext_resource type="Texture2D" uid="uid://cqtxxhuvdjedv" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/health_bar_overlay.png" id="4_gu5w3"]
+[ext_resource type="Texture2D" uid="uid://dkt7br361w6ug" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/health_bar_background.png" id="4_m81am"]
 [ext_resource type="Script" uid="uid://be71c366bfdyb" path="res://Scripts/hud_container.gd" id="4_uapsp"]
-[ext_resource type="Script" uid="uid://bud2im5k33wq7" path="res://Scripts/player_camera.gd" id="5_7vix2"]
+[ext_resource type="Texture2D" uid="uid://cq8cnpt3awmfe" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/health_bar_fill.png" id="5_ov5rv"]
+[ext_resource type="Texture2D" uid="uid://daenfftcefnft" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/bomb_bar_background.png" id="7_n0syu"]
+[ext_resource type="Texture2D" uid="uid://bw3h0e81co7ck" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/bomb_bar_overlay.png" id="8_rdi2b"]
+[ext_resource type="Texture2D" uid="uid://cumpaeni6g42" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/bomb_bar_fill.png" id="9_vqggo"]
+[ext_resource type="Shader" uid="uid://u17b4xsm82w3" path="res://Shaders/HitEffect.gdshader" id="10_vqggo"]
+[ext_resource type="AudioStream" uid="uid://dlwsf2ofclpml" path="res://Assets/Audio/SFX/Footstep.wav" id="11_n0syu"]
+[ext_resource type="AudioStream" uid="uid://bk50lj1qq1q1w" path="res://Assets/Audio/SFX/dragon-studio-whoosh-effect-382717.mp3" id="12_rdi2b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8y2kw"]
 size = Vector2(50, 44)
@@ -12,21 +20,61 @@ size = Vector2(50, 44)
 [sub_resource type="CircleShape2D" id="CircleShape2D_uapsp"]
 radius = 66.068146
 
-[node name="Player" type="CharacterBody2D" unique_id=1541806321 node_paths=PackedStringArray("Muzzle", "DropRate", "CollectArea", "exp_bar") groups=["player"]]
+[sub_resource type="CircleShape2D" id="CircleShape2D_o4lsc"]
+radius = 35.22783
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rdi2b"]
+shader = ExtResource("10_vqggo")
+shader_parameter/flash_amount = 0.0
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gu5w3"]
+atlas = ExtResource("4_7vix2")
+region = Rect2(0, 0, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ov5rv"]
+atlas = ExtResource("4_7vix2")
+region = Rect2(347, 0, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xst4l"]
+atlas = ExtResource("4_7vix2")
+region = Rect2(0, 347, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p3isv"]
+atlas = ExtResource("4_7vix2")
+region = Rect2(347, 347, 347, 347)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o4lsc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gu5w3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ov5rv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xst4l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p3isv")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 8.0
+}]
+
+[node name="Player" type="CharacterBody2D" unique_id=1541806321 node_paths=PackedStringArray("Muzzle", "DropRate") groups=["player"]]
+collision_layer = 7
+collision_mask = 6
 motion_mode = 1
 script = ExtResource("1_8y2kw")
 BombNode = ExtResource("2_gqvyu")
 Muzzle = NodePath("Marker2D")
 DropRate = NodePath("DropRate")
-CollectArea = NodePath("CollectArea")
-exp_bar = NodePath("HUD/ExpBar")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1933693312]
 shape = SubResource("RectangleShape2D_8y2kw")
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1243302929]
-scale = Vector2(0.375, 0.359375)
-texture = ExtResource("1_no7dv")
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=612158831]
 
@@ -44,11 +92,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("4_uapsp")
 HpLabel = NodePath("Label")
-SpeedLable = NodePath("Label2")
+SpeedLable = NodePath("NumberOfBombs")
 
 [node name="Label" type="Label" parent="HUD/HUDContainer" unique_id=1515367670]
+visible = false
 layout_mode = 0
 offset_left = 24.0
 offset_top = 41.0
@@ -56,31 +106,59 @@ offset_right = 76.0
 offset_bottom = 64.0
 text = "Health"
 
-[node name="Label2" type="Label" parent="HUD/HUDContainer" unique_id=1793556578]
+[node name="NumberOfBombs" type="Label" parent="HUD/HUDContainer" unique_id=1793556578]
+visible = false
+z_index = 1
 layout_mode = 0
-offset_left = 24.0
-offset_top = 64.0
-offset_right = 76.0
-offset_bottom = 87.0
+offset_left = 84.0
+offset_top = 120.0
+offset_right = 136.0
+offset_bottom = 143.0
 text = "speed"
 
-[node name="ExpBar" type="ProgressBar" parent="HUD" unique_id=556139805]
-offset_left = 38.0
-offset_right = 1105.0
-offset_bottom = 27.0
-max_value = 2.0
+[node name="HealthBar" type="TextureProgressBar" parent="HUD/HUDContainer" unique_id=592415112]
+layout_mode = 0
+offset_left = 149.0
+offset_top = 13.0
+offset_right = 402.0
+offset_bottom = 83.0
+value = 50.0
+texture_under = ExtResource("4_m81am")
+texture_over = ExtResource("4_gu5w3")
+texture_progress = ExtResource("5_ov5rv")
+
+[node name="BombHud" type="TextureProgressBar" parent="HUD/HUDContainer" unique_id=52977540]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+value = 44.0
+fill_mode = 3
+texture_under = ExtResource("7_n0syu")
+texture_over = ExtResource("8_rdi2b")
+texture_progress = ExtResource("9_vqggo")
 
 [node name="CollectArea" type="Area2D" parent="." unique_id=2035955851]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollectArea" unique_id=958986943]
 shape = SubResource("CircleShape2D_uapsp")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=788493284]
-zoom = Vector2(0.75, 0.75)
-limit_left = 0
-limit_top = 0
-limit_right = 1500
-limit_bottom = 1500
-script = ExtResource("5_7vix2")
+[node name="HurtBox" type="Area2D" parent="." unique_id=185884617]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox" unique_id=417122791]
+shape = SubResource("CircleShape2D_o4lsc")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=398290573]
+material = SubResource("ShaderMaterial_rdi2b")
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_o4lsc")
+autoplay = "default"
+frame_progress = 0.86175466
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=538416855]
+stream = ExtResource("11_n0syu")
+
+[node name="DashSoundEffect" type="AudioStreamPlayer2D" parent="." unique_id=749469904]
+stream = ExtResource("12_rdi2b")
 
 [connection signal="area_entered" from="CollectArea" to="." method="_on_collect_area_area_entered"]
+[connection signal="body_entered" from="HurtBox" to="." method="_on_hurt_box_body_entered"]

@@ -1,9 +1,13 @@
 [gd_scene format=3 uid="uid://bs1e6rjc61nec"]
 
 [ext_resource type="Script" uid="uid://pqkv2rfou0fp" path="res://Scripts/enemy_spawner.gd" id="1_dnts2"]
+[ext_resource type="PackedScene" uid="uid://cnoqh0cpw36u3" path="res://Scenes/Obejcts/Telegraph.tscn" id="2_xu5ik"]
 
-[node name="EnemySpawner" type="Node2D" unique_id=1827537512 groups=["enemy_spawner"]]
+[node name="EnemySpawner" type="Node2D" unique_id=1827537512 node_paths=PackedStringArray("wavename", "tutorial_label") groups=["enemy_spawner"]]
 script = ExtResource("1_dnts2")
+wavename = NodePath("RichTextLabel")
+tutorial_label = NodePath("RichTextLabel2")
+TelegraphNode = ExtResource("2_xu5ik")
 
 [node name="WaitSpawnTimer" type="Timer" parent="." unique_id=2057680272]
 wait_time = 3.0
@@ -12,5 +16,29 @@ one_shot = true
 [node name="SpawnTimer" type="Timer" parent="." unique_id=1407798015]
 wait_time = 2.0
 
-[connection signal="timeout" from="WaitSpawnTimer" to="." method="_on_wait_spawn_timer_timeout"]
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=1849514241]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 203.0
+offset_right = 907.0
+offset_bottom = 180.0
+grow_horizontal = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+bbcode_enabled = true
+horizontal_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="." unique_id=2086940911]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 230.0
+offset_top = 100.0
+offset_right = 880.0
+offset_bottom = 280.0
+grow_horizontal = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+bbcode_enabled = true
+horizontal_alignment = 1
+
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

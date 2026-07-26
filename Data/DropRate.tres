@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_m4qbw")
 _name = "Drop Rate"
-Info = "Player Can drop \\n bomb more often"
+Info = "Quickens your bomb deployment capability, reducing the delay between setting down bombs."
 Type = 5
 UPbomb_drop_rate = -0.08
 metadata/_custom_type_script = "uid://dbu26i1iinwcm"

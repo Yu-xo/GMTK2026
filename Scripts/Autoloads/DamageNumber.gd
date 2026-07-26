@@ -1,5 +1,8 @@
 extends Node
 
+
+
+
 func _display_number(value: int, display_pos: Vector2):
 	var number = Label.new()
 	number.global_position = display_pos

@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://cbi3mprcowhvj"]
 
 [ext_resource type="Script" uid="uid://8dwan223y2le" path="res://Scripts/BaseBomb.gd" id="1_lydrk"]
+[ext_resource type="Texture2D" uid="uid://5pugir1rw8bp" path="res://Assets/Particles/Red.png" id="3_88hkj"]
+[ext_resource type="AudioStream" uid="uid://ei2p0fsvau0u" path="res://Assets/Audio/SFX/Explosion1.wav" id="4_l3ajl"]
+[ext_resource type="AudioStream" uid="uid://b6n02tuv6kxg0" path="res://Assets/Audio/SFX/reddog0607-clock-ticking-365218.mp3" id="5_oca4r"]
+[ext_resource type="Texture2D" uid="uid://7rkfmamelx1s" path="res://Assets/Objects/Explo.webp" id="6_oca4r"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_o4lsc"]
 resource_local_to_scene = true
@@ -18,13 +22,85 @@ _data = {
 &"RESET": SubResource("Animation_lydrk")
 }
 
-[node name="Area2D" type="Area2D" unique_id=567037619]
+[sub_resource type="AtlasTexture" id="AtlasTexture_j3ufa"]
+atlas = ExtResource("6_oca4r")
+region = Rect2(0, 0, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bwn12"]
+atlas = ExtResource("6_oca4r")
+region = Rect2(0, 347, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4lf6v"]
+atlas = ExtResource("6_oca4r")
+region = Rect2(347, 0, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tgmv3"]
+atlas = ExtResource("6_oca4r")
+region = Rect2(347, 347, 347, 347)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o4lsc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j3ufa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bwn12")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4lf6v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tgmv3")
+}],
+"loop": 0,
+"name": &"exp",
+"speed": 8.0
+}]
+
+[node name="Area2D" type="Area2D" unique_id=567037619 node_paths=PackedStringArray("collision", "bomb_sprite", "explosion_particles", "blast_effect", "tick_effect")]
 script = ExtResource("1_lydrk")
+collision = NodePath("CollisionShape2D")
+bomb_sprite = NodePath("AnimatedSprite2D")
+explosion_particles = NodePath("CPUParticles2D")
+blast_effect = NodePath("BlastEffect")
+tick_effect = NodePath("TickEffect")
+max_damage = 100
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1854388100]
 shape = SubResource("CircleShape2D_o4lsc")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1809202824]
 libraries/ = SubResource("AnimationLibrary_88hkj")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1304371085]
+emitting = false
+amount = 40
+texture = ExtResource("3_88hkj")
+lifetime = 40.0
+one_shot = true
+explosiveness = 1.0
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 180.0
+initial_velocity_max = 250.0
+angular_velocity_min = -180.0
+angular_velocity_max = 180.0
+linear_accel_min = -100.0
+linear_accel_max = 100.0
+scale_amount_min = 2.0
+scale_amount_max = 4.0
+
+[node name="BlastEffect" type="AudioStreamPlayer2D" parent="." unique_id=894583985]
+stream = ExtResource("4_l3ajl")
+
+[node name="TickEffect" type="AudioStreamPlayer2D" parent="." unique_id=385666078]
+stream = ExtResource("5_oca4r")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=971828598]
+scale = Vector2(0.13, 0.13)
+sprite_frames = SubResource("SpriteFrames_o4lsc")
+animation = &"exp"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

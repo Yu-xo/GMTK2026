@@ -1,49 +1,262 @@
 [gd_scene format=3 uid="uid://d3umjwv25y1cp"]
 
 [ext_resource type="PackedScene" uid="uid://dbw1o7k57og33" path="res://Scenes/Characters/Player/Player.tscn" id="1_piqhl"]
+[ext_resource type="Script" uid="uid://bud2im5k33wq7" path="res://Scripts/player_camera.gd" id="1_u2c4d"]
 [ext_resource type="PackedScene" uid="uid://bs1e6rjc61nec" path="res://Scenes/EnemySpawner/EnemySpawner.tscn" id="2_wgpax"]
 [ext_resource type="PackedScene" uid="uid://oyvcc75fvess" path="res://Scenes/EnemySpawner/SpawnMarker.tscn" id="3_8l0as"]
+[ext_resource type="PackedScene" uid="uid://cvewnspltwaul" path="res://Scenes/UI/upgrade_ui.tscn" id="4_jfxyn"]
+[ext_resource type="Texture2D" uid="uid://o73uwwalmwqa" path="res://Assets/Background/2409_Sem_Titulo_20260726090724.webp" id="6_776he"]
+[ext_resource type="Texture2D" uid="uid://bxg00rkq0hrj4" path="res://Assets/UI/CardFrontSide.webp" id="7_k76x8"]
+[ext_resource type="FontFile" uid="uid://b3t1uvw32ff76" path="res://Assets/Fonts/static/WinkyRough-Bold.ttf" id="8_piqhl"]
+[ext_resource type="Texture2D" uid="uid://bwkdv43n3l387" path="res://Assets/UI/Round/RoundButton2_wood.png" id="8_v1wv5"]
+[ext_resource type="Texture2D" uid="uid://d0v6pdqpm2jq" path="res://Assets/UI/Round/RoundButton2_white.png" id="9_piqhl"]
+[ext_resource type="AudioStream" uid="uid://bp6vxhwpampce" path="res://Assets/Audio/Track/Luca Lotufo - gameplay theme 5 2026-07-26 12_04_120918276.mp3" id="11_piqhl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o4lsc"]
+size = Vector2(88, 668)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_45xi4"]
+size = Vector2(1184, 84)
+
+[sub_resource type="Animation" id="Animation_1hub2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer/GameStart:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_776he"]
+resource_name = "Start"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer/GameStart:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1hub2"]
+_data = {
+&"RESET": SubResource("Animation_1hub2"),
+&"Start": SubResource("Animation_776he")
+}
+
+[sub_resource type="Theme" id="Theme_k76x8"]
+default_font = ExtResource("8_piqhl")
+
+[sub_resource type="Theme" id="Theme_o4lsc"]
+default_font = ExtResource("8_piqhl")
 
 [node name="Main" type="Node" unique_id=1359459859]
 
-[node name="Player" parent="." unique_id=1541806321 instance=ExtResource("1_piqhl")]
-position = Vector2(391, 303)
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=239860626]
+texture = ExtResource("6_776he")
+centered = false
+metadata/_edit_lock_ = true
 
-[node name="EnemySpawner" parent="." unique_id=1827537512 instance=ExtResource("2_wgpax")]
-position = Vector2(588, 40)
-melee_wave = Array[int]([3, 2, 3])
-range_wave = Array[int]([2, 2, 2])
-tank_wave = Array[int]([2, 0, 3])
+[node name="Camera2D" type="Camera2D" parent="." unique_id=546062041]
+position = Vector2(574, 326)
+limit_enabled = false
+limit_left = 0
+limit_top = 0
+limit_right = 1152
+limit_bottom = 648
+script = ExtResource("1_u2c4d")
 
-[node name="Marker2D" parent="." unique_id=243309589 instance=ExtResource("3_8l0as")]
-position = Vector2(210, 560)
+[node name="Player" parent="." unique_id=1541806321 node_paths=PackedStringArray("enemy_spawner", "camera", "UpgradeUI") instance=ExtResource("1_piqhl")]
+position = Vector2(550, 326)
+enemy_spawner = NodePath("../EnemySpawner")
+camera = NodePath("../Camera2D")
+UpgradeUI = NodePath("../UpgradeUI")
 
-[node name="Marker2D2" parent="." unique_id=790111024 instance=ExtResource("3_8l0as")]
-position = Vector2(1786, 793)
+[node name="EnemySpawner" parent="." unique_id=1827537512 node_paths=PackedStringArray("panel", "end_view", "color_rect", "ValueContiner", "try_again", "rich_text_label", "end_game_values", "spawn_points", "UpgradeUI") instance=ExtResource("2_wgpax")]
+panel = NodePath("../EndView/Panel")
+end_view = NodePath("../EndView")
+color_rect = NodePath("../EndView/Panel/ColorRect")
+ValueContiner = NodePath("../EndView/Panel/TextureRect")
+try_again = NodePath("../EndView/Panel/TryAgain")
+rich_text_label = NodePath("../EndView/Panel/TryAgain/RichTextLabel")
+end_game_values = NodePath("../EndView/Panel/EndGameValues")
+spawn_points = [NodePath("../SpawnPointHolder/Marker2D"), NodePath("../SpawnPointHolder/Marker2D2"), NodePath("../SpawnPointHolder/Marker2D3"), NodePath("../SpawnPointHolder/Marker2D4"), NodePath("../SpawnPointHolder/Marker2D5"), NodePath("../SpawnPointHolder/Marker2D6"), NodePath("../SpawnPointHolder/Marker2D7"), NodePath("../SpawnPointHolder/Marker2D8"), NodePath("../SpawnPointHolder/Marker2D9"), NodePath("../SpawnPointHolder/Marker2D10"), NodePath("../SpawnPointHolder/Marker2D11"), NodePath("../SpawnPointHolder/Marker2D12"), NodePath("../SpawnPointHolder/Marker2D13"), NodePath("../SpawnPointHolder/Marker2D14"), NodePath("../SpawnPointHolder/Marker2D15"), NodePath("../SpawnPointHolder/Marker2D16")]
+UpgradeUI = NodePath("../UpgradeUI")
 
-[node name="Marker2D3" parent="." unique_id=1446050172 instance=ExtResource("3_8l0as")]
-position = Vector2(931, 428)
+[node name="SpawnPointHolder" type="Node" parent="." unique_id=230632795]
 
-[node name="Marker2D4" parent="." unique_id=1116402669 instance=ExtResource("3_8l0as")]
-position = Vector2(1655, 262)
+[node name="Marker2D" parent="SpawnPointHolder" unique_id=243309589 instance=ExtResource("3_8l0as")]
+position = Vector2(0, 648)
 
-[node name="Marker2D5" parent="." unique_id=824303908 instance=ExtResource("3_8l0as")]
-position = Vector2(864, 1012)
+[node name="Marker2D2" parent="SpawnPointHolder" unique_id=1857649268 instance=ExtResource("3_8l0as")]
+position = Vector2(1152, 648)
 
-[node name="Marker2D6" parent="." unique_id=1959449043 instance=ExtResource("3_8l0as")]
-position = Vector2(1808, 1123)
+[node name="Marker2D3" parent="SpawnPointHolder" unique_id=2000846439 instance=ExtResource("3_8l0as")]
+position = Vector2(1152, 0)
 
-[node name="Marker2D7" parent="." unique_id=1892005534 instance=ExtResource("3_8l0as")]
-position = Vector2(1417, 610)
+[node name="Marker2D4" parent="SpawnPointHolder" unique_id=1809603048 instance=ExtResource("3_8l0as")]
+position = Vector2(0, 303)
 
-[node name="Marker2D8" parent="." unique_id=2070056052 instance=ExtResource("3_8l0as")]
-position = Vector2(341, 1038)
+[node name="Marker2D5" parent="SpawnPointHolder" unique_id=680411565 instance=ExtResource("3_8l0as")]
+position = Vector2(574, 0)
 
-[node name="Marker2D9" parent="." unique_id=667695198 instance=ExtResource("3_8l0as")]
-position = Vector2(1376, 1100)
+[node name="Marker2D6" parent="SpawnPointHolder" unique_id=751909744 instance=ExtResource("3_8l0as")]
+position = Vector2(1152, 303)
 
-[node name="Marker2D10" parent="." unique_id=1180875554 instance=ExtResource("3_8l0as")]
-position = Vector2(1897, 467)
+[node name="Marker2D7" parent="SpawnPointHolder" unique_id=1489355775 instance=ExtResource("3_8l0as")]
+position = Vector2(574, 648)
 
-[node name="Marker2D11" parent="." unique_id=1101268114 instance=ExtResource("3_8l0as")]
-position = Vector2(1404, 200)
+[node name="Marker2D8" parent="SpawnPointHolder" unique_id=298460430 instance=ExtResource("3_8l0as")]
+
+[node name="Marker2D9" parent="SpawnPointHolder" unique_id=1865305218 instance=ExtResource("3_8l0as")]
+position = Vector2(223, 0)
+
+[node name="Marker2D10" parent="SpawnPointHolder" unique_id=384951144 instance=ExtResource("3_8l0as")]
+position = Vector2(269, 648)
+
+[node name="Marker2D11" parent="SpawnPointHolder" unique_id=1203605847 instance=ExtResource("3_8l0as")]
+position = Vector2(894, 648)
+
+[node name="Marker2D12" parent="SpawnPointHolder" unique_id=16390695 instance=ExtResource("3_8l0as")]
+position = Vector2(894, 0)
+
+[node name="Marker2D13" parent="SpawnPointHolder" unique_id=1427243508 instance=ExtResource("3_8l0as")]
+position = Vector2(1152, 159)
+
+[node name="Marker2D14" parent="SpawnPointHolder" unique_id=672801635 instance=ExtResource("3_8l0as")]
+position = Vector2(1152, 489)
+
+[node name="Marker2D15" parent="SpawnPointHolder" unique_id=1696588452 instance=ExtResource("3_8l0as")]
+position = Vector2(0, 475)
+
+[node name="Marker2D16" parent="SpawnPointHolder" unique_id=70469515 instance=ExtResource("3_8l0as")]
+position = Vector2(0, 159)
+
+[node name="UpgradeUI" parent="." unique_id=1177415299 node_paths=PackedStringArray("WaveSpawner") instance=ExtResource("4_jfxyn")]
+z_index = 2
+offset_left = -94.0
+offset_right = -94.0
+WaveSpawner = NodePath("../EnemySpawner")
+
+[node name="Stage" type="Node" parent="." unique_id=1381000796]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Stage" unique_id=1151208471]
+visible = false
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stage/StaticBody2D" unique_id=85643136]
+position = Vector2(-49, 329)
+shape = SubResource("RectangleShape2D_o4lsc")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Stage/StaticBody2D" unique_id=2023339560]
+position = Vector2(1195, 326)
+shape = SubResource("RectangleShape2D_o4lsc")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Stage/StaticBody2D" unique_id=1791557819]
+position = Vector2(578, -42)
+shape = SubResource("RectangleShape2D_45xi4")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Stage/StaticBody2D" unique_id=832261002]
+position = Vector2(590, 689)
+shape = SubResource("RectangleShape2D_45xi4")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=151197126]
+libraries/ = SubResource("AnimationLibrary_1hub2")
+
+[node name="GameStart" type="ColorRect" parent="AnimationPlayer" unique_id=1878395001]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="EndView" type="Control" parent="." unique_id=131527989]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="EndView" unique_id=1710199424]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="EndView/Panel" unique_id=675043269]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="EndView/Panel" unique_id=1518892750]
+layout_mode = 0
+offset_left = 471.0
+offset_top = 148.0
+offset_right = 671.0
+offset_bottom = 448.0
+mouse_filter = 2
+texture = ExtResource("7_k76x8")
+
+[node name="TryAgain" type="TextureButton" parent="EndView/Panel" unique_id=66035810]
+layout_mode = 0
+offset_left = 528.0
+offset_top = 380.99994
+offset_right = 890.0
+offset_bottom = 540.99994
+scale = Vector2(0.24, 0.24)
+theme = SubResource("Theme_k76x8")
+texture_normal = ExtResource("8_v1wv5")
+texture_pressed = ExtResource("9_piqhl")
+metadata/_edit_use_anchors_ = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="EndView/Panel/TryAgain" unique_id=412862244]
+layout_mode = 0
+offset_left = 62.50003
+offset_top = 25.000229
+offset_right = 330.83353
+offset_bottom = 110.00023
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 58
+bbcode_enabled = true
+text = "Try Again"
+
+[node name="EndGameValues" type="RichTextLabel" parent="EndView/Panel" unique_id=489035008]
+layout_mode = 0
+offset_left = 510.0
+offset_top = 243.0
+offset_right = 622.0
+offset_bottom = 363.0
+mouse_filter = 2
+theme = SubResource("Theme_o4lsc")
+bbcode_enabled = true
+text = "Wave Number"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="EndView" unique_id=1011833211]
+stream = ExtResource("11_piqhl")
+autoplay = true
+parameters/looping = true

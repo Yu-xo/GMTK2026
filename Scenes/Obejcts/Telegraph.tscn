@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://cnoqh0cpw36u3"]
+
+[ext_resource type="Texture2D" uid="uid://dwlgjupci4gc7" path="res://Assets/UI/HUD/Telegraph.webp" id="1_fn2cp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ag6u"]
+atlas = ExtResource("1_fn2cp")
+region = Rect2(0, 0, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_504el"]
+atlas = ExtResource("1_fn2cp")
+region = Rect2(347, 0, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8oat2"]
+atlas = ExtResource("1_fn2cp")
+region = Rect2(0, 347, 347, 347)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ji56"]
+atlas = ExtResource("1_fn2cp")
+region = Rect2(347, 347, 347, 347)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o4lsc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ag6u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_504el")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8oat2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8ji56")
+}],
+"loop": 0,
+"name": &"idle",
+"speed": 4.0
+}]
+
+[node name="Node2D" type="Node2D" unique_id=468010345]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=24430256]
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_o4lsc")
+animation = &"idle"

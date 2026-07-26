@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_mb2fh")
 _name = "SpeedBoost"
-Info = "Increease Player speed"
+Info = "Improves overall mobility, allowing you to move faster across the map to stay ahead of incoming threats."
 Type = 1
 UPspeed = 100
 metadata/_custom_type_script = "uid://dbu26i1iinwcm"

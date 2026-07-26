@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://djypp4i0b02al"]
+
+[ext_resource type="Script" uid="uid://cl8j2neum7u7f" path="res://Test/card.gd" id="1_mu363"]
+[ext_resource type="Texture2D" uid="uid://btav3i67oftbo" path="res://Assets/UI/CardBackSide.webp" id="2_33bk1"]
+[ext_resource type="Texture2D" uid="uid://bxg00rkq0hrj4" path="res://Assets/UI/CardFrontSide.webp" id="3_gd6y2"]
+
+[node name="Node2D" type="Control" unique_id=1667161347]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -324.0
+offset_right = -576.0
+offset_bottom = -324.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mu363")
+
+[node name="BackSide" type="TextureRect" parent="." unique_id=1403017329]
+layout_mode = 0
+offset_left = 485.0
+offset_top = -218.0
+offset_right = 685.0
+offset_bottom = 82.0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("2_33bk1")
+
+[node name="FrontSide" type="TextureRect" parent="." unique_id=1727680103]
+layout_mode = 0
+offset_left = 485.0
+offset_top = -218.0
+offset_right = 685.0
+offset_bottom = 82.0
+scale = Vector2(1e-05, 1)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("3_gd6y2")
+
+[node name="Label" type="Label" parent="FrontSide" unique_id=1082072970]
+layout_mode = 0
+offset_left = 76.0
+offset_top = 153.0
+offset_right = 121.0
+offset_bottom = 176.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Effect"
