@@ -95,10 +95,10 @@ func _start_game_sequence() -> void:
 	in_tutorial = true
 
 	await _display_tutorial_step("[center][b][font_size=28][color=gold]MOVE[/color]\nPress [color=cyan]W, A, S, D[/color] to Move[/font_size][/b][/center]")
-	await _wait_for_input_action(["up", "down", "left", "right"])
+	await _wait_for_input_action(["ui_up", "ui_down", "ui_left", "ui_right"])
 
 	await _display_tutorial_step("[center][b][font_size=28][color=gold]ATTACK[/color]\nPress [color=crimson]Left Click[/color] to Drop Bomb[/font_size][/b][/center]")
-	await _wait_for_input_action(["attack", "plant_bomb"])
+	await _wait_for_input_action(["attack", "attack"])
 
 	await _display_tutorial_step("[center][b][font_size=28][color=gold]DASH[/color]\nPress [color=springgreen]Right Click[/color] to Dash[/font_size][/b][/center]")
 	await _wait_for_input_action(["dash"])

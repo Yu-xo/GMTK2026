@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bw43oeajff042"]
+
+[ext_resource type="Shader" uid="uid://u17b4xsm82w3" path="res://Data/Materials/HitEffect.gdshader" id="1_t1fbc"]
+
+[resource]
+shader = ExtResource("1_t1fbc")
+shader_parameter/flash_amount = 0.0
+shader_parameter/flash_color = Color(1, 1, 1, 1)

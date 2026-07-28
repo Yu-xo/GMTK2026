@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dl01rlpepvo0v"
-path="res://.godot/imported/RangedWalk.webp-95575d2a45f91a168047aefa3547e9f9.ctex"
+uid="uid://cgb3qy4ui7bcm"
+path="res://.godot/imported/icon.jpg-4a7f64b346e42b67f360ae423f9eb5cc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Characters/Player/RangedWalk.webp"
-dest_files=["res://.godot/imported/RangedWalk.webp-95575d2a45f91a168047aefa3547e9f9.ctex"]
+source_file="res://icon.jpg"
+dest_files=["res://.godot/imported/icon.jpg-4a7f64b346e42b67f360ae423f9eb5cc.ctex"]
 
 [params]
 

@@ -2,17 +2,145 @@
 
 [ext_resource type="Script" uid="uid://dymxf0txidqa8" path="res://Scripts/player.gd" id="1_8y2kw"]
 [ext_resource type="PackedScene" uid="uid://cbi3mprcowhvj" path="res://Scenes/Projectiles/BaseBomb.tscn" id="2_gqvyu"]
-[ext_resource type="Texture2D" uid="uid://bv2oil3adk8r2" path="res://Assets/Characters/Player/PlayerWalk.webp" id="4_7vix2"]
+[ext_resource type="Texture2D" uid="uid://bv2oil3adk8r2" path="res://Assets/Characters/PlayerWalk.webp" id="4_7vix2"]
 [ext_resource type="Texture2D" uid="uid://cqtxxhuvdjedv" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/health_bar_overlay.png" id="4_gu5w3"]
 [ext_resource type="Texture2D" uid="uid://dkt7br361w6ug" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/health_bar_background.png" id="4_m81am"]
 [ext_resource type="Script" uid="uid://be71c366bfdyb" path="res://Scripts/hud_container.gd" id="4_uapsp"]
 [ext_resource type="Texture2D" uid="uid://cq8cnpt3awmfe" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/health_bar_fill.png" id="5_ov5rv"]
+[ext_resource type="Texture2D" uid="uid://d5a6udh3q0tj" path="res://Assets/Characters/Player/wolf_pickup.png" id="6_ruack"]
 [ext_resource type="Texture2D" uid="uid://daenfftcefnft" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/bomb_bar_background.png" id="7_n0syu"]
+[ext_resource type="Texture2D" uid="uid://bltt84xejvutt" path="res://Assets/Characters/Player/wolf_walk.png" id="7_tde8l"]
 [ext_resource type="Texture2D" uid="uid://bw3h0e81co7ck" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/bomb_bar_overlay.png" id="8_rdi2b"]
+[ext_resource type="Script" uid="uid://bq76pa16t3uqc" path="res://Scripts/Creatures/health_controller.gd" id="8_t2lio"]
 [ext_resource type="Texture2D" uid="uid://cumpaeni6g42" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/bomb_bar_fill.png" id="9_vqggo"]
-[ext_resource type="Shader" uid="uid://u17b4xsm82w3" path="res://Shaders/HitEffect.gdshader" id="10_vqggo"]
+[ext_resource type="Material" uid="uid://bw43oeajff042" path="res://Data/Materials/flash_material.tres" id="10_vqggo"]
 [ext_resource type="AudioStream" uid="uid://dlwsf2ofclpml" path="res://Assets/Audio/SFX/Footstep.wav" id="11_n0syu"]
+[ext_resource type="Texture2D" uid="uid://ctpkkeai61ilv" path="res://Assets/Characters/Player/wolf_idle.png" id="11_vqggo"]
 [ext_resource type="AudioStream" uid="uid://bk50lj1qq1q1w" path="res://Assets/Audio/SFX/dragon-studio-whoosh-effect-382717.mp3" id="12_rdi2b"]
+
+[sub_resource type="Animation" id="Animation_vqggo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprites/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprites/Sprite2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("4_7vix2")]
+}
+
+[sub_resource type="Animation" id="Animation_ruack"]
+resource_name = "idle"
+length = 0.8
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprites/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.19999999, 0.39999998, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprites/Sprite2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("6_ruack")]
+}
+
+[sub_resource type="Animation" id="Animation_4bb8e"]
+resource_name = "idle"
+length = 0.8
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprites/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.19999999, 0.39999998, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprites/Sprite2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("11_vqggo")]
+}
+
+[sub_resource type="Animation" id="Animation_tde8l"]
+resource_name = "idle"
+length = 0.6
+loop_mode = 1
+step = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprites/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3, 0.45),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprites/Sprite2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("7_tde8l")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ruack"]
+_data = {
+&"RESET": SubResource("Animation_vqggo"),
+&"bomb": SubResource("Animation_ruack"),
+&"idle": SubResource("Animation_4bb8e"),
+&"walk": SubResource("Animation_tde8l")
+}
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8y2kw"]
 size = Vector2(50, 44)
@@ -23,60 +151,37 @@ radius = 66.068146
 [sub_resource type="CircleShape2D" id="CircleShape2D_o4lsc"]
 radius = 35.22783
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rdi2b"]
-shader = ExtResource("10_vqggo")
-shader_parameter/flash_amount = 0.0
-shader_parameter/flash_color = Color(1, 1, 1, 1)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gu5w3"]
-atlas = ExtResource("4_7vix2")
-region = Rect2(0, 0, 347, 347)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ov5rv"]
-atlas = ExtResource("4_7vix2")
-region = Rect2(347, 0, 347, 347)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xst4l"]
-atlas = ExtResource("4_7vix2")
-region = Rect2(0, 347, 347, 347)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_p3isv"]
-atlas = ExtResource("4_7vix2")
-region = Rect2(347, 347, 347, 347)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_o4lsc"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gu5w3")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ov5rv")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xst4l")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_p3isv")
-}],
-"loop": 1,
-"name": &"default",
-"speed": 8.0
-}]
-
-[node name="Player" type="CharacterBody2D" unique_id=1541806321 node_paths=PackedStringArray("Muzzle", "DropRate") groups=["player"]]
+[node name="Player" type="CharacterBody2D" unique_id=1541806321 node_paths=PackedStringArray("DropRate") groups=["player"]]
 collision_layer = 7
 collision_mask = 6
 motion_mode = 1
 script = ExtResource("1_8y2kw")
 BombNode = ExtResource("2_gqvyu")
-Muzzle = NodePath("Marker2D")
 DropRate = NodePath("DropRate")
+
+[node name="Sprites" type="Node2D" parent="." unique_id=1606881885]
+position = Vector2(-0.99999994, -2)
+scale = Vector2(0.1, 0.1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprites" unique_id=628421914]
+material = ExtResource("10_vqggo")
+texture = ExtResource("4_7vix2")
+hframes = 2
+vframes = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1210087422]
+libraries/ = SubResource("AnimationLibrary_ruack")
+autoplay = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1933693312]
 shape = SubResource("RectangleShape2D_8y2kw")
 
-[node name="Marker2D" type="Marker2D" parent="." unique_id=612158831]
+[node name="BombSpawnPoint" type="Marker2D" parent="." unique_id=612158831]
+
+[node name="HealthController" type="Node" parent="." unique_id=1058047608]
+script = ExtResource("8_t2lio")
+max_health = 3
+metadata/_custom_type_script = "uid://bq76pa16t3uqc"
 
 [node name="PlayerUpgradeSystem" type="Node" parent="." unique_id=1687560718]
 
@@ -146,13 +251,6 @@ shape = SubResource("CircleShape2D_uapsp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox" unique_id=417122791]
 shape = SubResource("CircleShape2D_o4lsc")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=398290573]
-material = SubResource("ShaderMaterial_rdi2b")
-scale = Vector2(0.2, 0.2)
-sprite_frames = SubResource("SpriteFrames_o4lsc")
-autoplay = "default"
-frame_progress = 0.86175466
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=538416855]
 stream = ExtResource("11_n0syu")

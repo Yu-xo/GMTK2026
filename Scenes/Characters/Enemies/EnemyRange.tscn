@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://dnwjeuhtuyy07" path="res://Scripts/enemy.gd" id="1_b35jk"]
 [ext_resource type="Script" uid="uid://co1jxn5afii0q" path="res://Resources/enemy_res.gd" id="2_j6afi"]
 [ext_resource type="PackedScene" uid="uid://doim8d2tnbks4" path="res://Scenes/Projectiles/EnemyProjectile.tscn" id="3_j6afi"]
-[ext_resource type="Texture2D" uid="uid://d2riijei28h63" path="res://Assets/Characters/Player/RangedAttack.webp" id="4_8vgbl"]
-[ext_resource type="Shader" uid="uid://u17b4xsm82w3" path="res://Shaders/HitEffect.gdshader" id="4_45eag"]
-[ext_resource type="Texture2D" uid="uid://dl01rlpepvo0v" path="res://Assets/Characters/Player/RangedWalk.webp" id="5_45eag"]
+[ext_resource type="Texture2D" uid="uid://d2riijei28h63" path="res://Assets/Characters/RangedAttack.webp" id="4_8vgbl"]
+[ext_resource type="Shader" uid="uid://u17b4xsm82w3" path="res://Data/Materials/HitEffect.gdshader" id="4_45eag"]
+[ext_resource type="Texture2D" uid="uid://dl01rlpepvo0v" path="res://Assets/Characters/RangedWalk.webp" id="5_45eag"]
 
 [sub_resource type="Resource" id="Resource_v4mj0"]
 resource_local_to_scene = true

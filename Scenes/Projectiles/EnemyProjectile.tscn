@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://doim8d2tnbks4"]
 
 [ext_resource type="Script" uid="uid://cpxgphrankypr" path="res://Scripts/enemy_projectile.gd" id="1_stcsr"]
-[ext_resource type="Texture2D" uid="uid://74jqrw8x4ocq" path="res://Assets/Characters/Player/RangedProjecitle.webp" id="2_stcsr"]
+[ext_resource type="Texture2D" uid="uid://74jqrw8x4ocq" path="res://Assets/Characters/RangedProjecitle.webp" id="2_stcsr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mchqt"]
 

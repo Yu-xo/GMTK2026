@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dnwjeuhtuyy07" path="res://Scripts/enemy.gd" id="1_gg154"]
 [ext_resource type="Script" uid="uid://co1jxn5afii0q" path="res://Resources/enemy_res.gd" id="2_21s23"]
-[ext_resource type="Texture2D" uid="uid://b1qsnv71x0o78" path="res://Assets/Characters/Player/sprite_sheet_2_1.webp" id="4_21s23"]
+[ext_resource type="Texture2D" uid="uid://b1qsnv71x0o78" path="res://Assets/Characters/sprite_sheet_2_1.webp" id="4_21s23"]
 
 [sub_resource type="Resource" id="Resource_v4mj0"]
 resource_local_to_scene = true

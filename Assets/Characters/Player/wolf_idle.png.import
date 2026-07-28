@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d2riijei28h63"
-path="res://.godot/imported/RangedAttack.webp-712e78f8346c9e3349e00236d557a52b.ctex"
+uid="uid://ctpkkeai61ilv"
+path="res://.godot/imported/wolf_idle.png-ca65bc59d8b1b63505d814f88587205e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Characters/Player/RangedAttack.webp"
-dest_files=["res://.godot/imported/RangedAttack.webp-712e78f8346c9e3349e00236d557a52b.ctex"]
+source_file="res://Assets/Characters/Player/wolf_idle.png"
+dest_files=["res://.godot/imported/wolf_idle.png-ca65bc59d8b1b63505d814f88587205e.ctex"]
 
 [params]
 

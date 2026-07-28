@@ -11,25 +11,28 @@ enum States {
 var current_state = States.IDLE
 var displayed_hp: float
 var displayed_bomb: float
-var dir: Vector2
+var move_direction := Vector2.ZERO
+var last_direction := Vector2.RIGHT
+
+@onready var health: HealthController = $HealthController
 
 @onready var health_bar: TextureProgressBar = $HUD/HUDContainer/HealthBar
 @onready var bomb_hud: TextureProgressBar = $HUD/HUDContainer/BombHud
 @onready var number_of_bombs_label: Label = $HUD/HUDContainer/NumberOfBombs
-@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var sprite: Sprite2D = $Sprites/Sprite2D
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
 @onready var dash_sound_effect: AudioStreamPlayer2D = $DashSoundEffect
 
 @export var enemy_spawner: Node
 
 @export var BombNode: PackedScene
-@export var Muzzle: Marker2D
+@onready var bomb_spawn_point: Marker2D = $BombSpawnPoint
 @export var DropRate: Timer
 
 @export var camera: Camera2D
 
 @export var UpgradeUI: Control
-
 var hp: int
 var move_speed: int
 
@@ -40,7 +43,6 @@ var DashCooldown: float
 
 var can_dash := true
 var is_dashing := false
-var dash_direction := Vector2.ZERO
 
 var drop_cooldown: float
 var number_of_bombs: int
@@ -60,19 +62,30 @@ func _ready() -> void:
 		DropRate.timeout.connect(_on_drop_timeout)
 
 	_update_stats()
+	health.on_damaged.connect(on_damaged)
+	health.on_death.connect(on_death)
+	health.on_health_changed.connect(health_changed)
 	displayed_hp = hp
 	displayed_bomb = drop_cooldown
 	_update_hud(0.0)
 
-
 func _physics_process(delta: float) -> void:
+	move_direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	
+	if move_direction != Vector2.ZERO:
+		last_direction = move_direction
+		
+	# Flip Sprite
+	if sprite and move_direction.x != 0:
+		sprite.flip_h = move_direction.x < 0
+	
 	if UpgradeUI:
 		UpgradeUI.visible = false
 
 	_update_hud(delta)
 
 	if is_dashing:
-		velocity = dash_direction * DashSpeed
+		velocity = last_direction * DashSpeed
 		move_and_slide()
 		return
 
@@ -104,7 +117,8 @@ func _update_stats() -> void:
 	displayed_bomb = drop_cooldown
 	_update_hud(0.0)
 
-
+	
+#region Player Management
 func _update_hud(delta: float) -> void:
 	if health_bar == null or bomb_hud == null or number_of_bombs_label == null:
 		return
@@ -124,26 +138,16 @@ func _update_hud(delta: float) -> void:
 	displayed_bomb = move_toward(displayed_bomb, target, drop_cooldown * 6.0 * delta)
 	bomb_hud.value = displayed_bomb
 
-
 func _state_handler(_delta):
 	match current_state:
-		States.IDLE:
-			_idle_state()
-
-		States.MOVE:
+		States.IDLE, States.MOVE:
 			_move_state()
-
 		States.ATTACK:
 			_drop_bomb()
-
 		States.HURT:
 			pass
-
 		States.DEAD:
-			if enemy_spawner and enemy_spawner.has_method("show_game_over"):
-				enemy_spawner.show_game_over()
 			return
-
 
 func _input(event):
 	if current_state == States.HURT or current_state == States.DEAD:
@@ -154,49 +158,36 @@ func _input(event):
 
 	if event.is_action_pressed("attack") and can_drop:
 		current_state = States.ATTACK
+#endregion
 
-
-func _move_direction() -> void:
-	if animated_sprite_2d == null:
-		return
-
-	if dir.x < 0:
-		animated_sprite_2d.flip_h = true
-	elif dir.x > 0:
-		animated_sprite_2d.flip_h = false
-
-
-func _idle_state():
-	dir = Input.get_vector("left", "right", "up", "down")
-
-	if dir != Vector2.ZERO:
-		current_state = States.MOVE
-	else:
+#region
+func _move_state() -> void:
+	if move_direction == Vector2.ZERO:
+		current_state = States.IDLE
 		velocity = Vector2.ZERO
 
-		if audio_stream_player_2d and audio_stream_player_2d.playing:
+		if animation_player.current_animation != "idle":
+			animation_player.play("idle")
+
+		if audio_stream_player_2d.playing:
 			audio_stream_player_2d.stop()
+		return
 
+	current_state = States.MOVE
 
-func _move_state():
-	dir = Input.get_vector("left", "right", "up", "down")
+	velocity = move_direction * move_speed
 
-	_move_direction()
+	if animation_player.current_animation != "walk":
+		animation_player.play("walk")
 
-	velocity = dir * move_speed
-
-	if audio_stream_player_2d and !audio_stream_player_2d.playing:
+	if !audio_stream_player_2d.playing:
 		audio_stream_player_2d.play()
 
-	if dir == Vector2.ZERO:
-		current_state = States.IDLE
+func _on_collect_area_area_entered(_area: Area2D) -> void:
+	pass # Replace with function body
+#endregion
 
-
-func _hurt_state(delta):
-	velocity = knockback_velocity
-	knockback_velocity = knockback_velocity.move_toward(Vector2.ZERO, 1200 * delta)
-
-
+#region Dashing
 func _start_dash():
 	if !can_dash or is_dashing:
 		return
@@ -210,18 +201,14 @@ func _start_dash():
 	if audio_stream_player_2d:
 		audio_stream_player_2d.stop()
 
-	dash_direction = Input.get_vector("left", "right", "up", "down")
-
-	if dash_direction == Vector2.ZERO:
-		dash_direction = Vector2.RIGHT
-
 	await get_tree().create_timer(DashDuration).timeout
 	is_dashing = false
 
 	await get_tree().create_timer(DashCooldown).timeout
 	can_dash = true
+#endregion
 
-
+#region Bombing
 func _drop_bomb():
 	if BombNode == null:
 		current_state = States.IDLE
@@ -229,11 +216,13 @@ func _drop_bomb():
 
 	can_drop = false
 
+	animation_player.play("bomb")
+
 	displayed_bomb = 0.0
 	if bomb_hud:
 		bomb_hud.value = 0.0
 
-	var spawn_pos = Muzzle.global_position if Muzzle else global_position
+	var spawn_pos = bomb_spawn_point.global_position if bomb_spawn_point else global_position
 
 	for i in range(number_of_bombs):
 		var bomb = BombNode.instantiate()
@@ -250,11 +239,18 @@ func _drop_bomb():
 
 	current_state = States.IDLE
 
-
 func _on_drop_timeout():
 	can_drop = true
 	_update_hud(0.0)
+#endregion
 
+#region Health Management
+func health_changed(_health: int) -> void:
+	_update_hud(0)
+
+func _hurt_state(delta):
+	velocity = knockback_velocity
+	knockback_velocity = knockback_velocity.move_toward(Vector2.ZERO, 1200 * delta)
 
 func _on_hurt_box_body_entered(body: Node2D) -> void:
 	if audio_stream_player_2d:
@@ -267,53 +263,15 @@ func _on_hurt_box_body_entered(body: Node2D) -> void:
 		return
 
 	can_take_damage = false
-	hp -= 1
+	health.take_damage(1)
 
-	if camera and camera.has_method("apply_shake"):
-		camera.apply_shake(18.0)
-
-	_update_hud(0.0)
-
-	if hp <= 0:
-		current_state = States.DEAD
-		if enemy_spawner and enemy_spawner.has_method("show_game_over"):
-			enemy_spawner.show_game_over()
-		return
-
-	current_state = States.HURT
-
-	var knockback_dir = (global_position - body.global_position).normalized()
-	knockback_velocity = knockback_dir * KnockbackForce
-
-	await get_tree().create_timer(HurtTime).timeout
-
-	if current_state != States.DEAD:
-		current_state = States.IDLE
-
-	await get_tree().create_timer(InvincibleTime).timeout
-	can_take_damage = true
-
-
-func _hit_player(damage_amount: int, force: float, direction: Vector2) -> void:
-	if audio_stream_player_2d:
-		audio_stream_player_2d.stop()
-
+func on_damaged(amount: int, force: float, direction: Vector2):
 	if !can_take_damage:
 		return
 
 	can_take_damage = false
-	hp -= damage_amount
 
-	if camera and camera.has_method("apply_shake"):
-		camera.apply_shake(25.0)
-
-	_update_hud(0.0)
-
-	if hp <= 0:
-		current_state = States.DEAD
-		if enemy_spawner and enemy_spawner.has_method("show_game_over"):
-			enemy_spawner.show_game_over()
-		return
+	health.damage(amount)
 
 	current_state = States.HURT
 	knockback_velocity = direction * force
@@ -325,3 +283,8 @@ func _hit_player(damage_amount: int, force: float, direction: Vector2) -> void:
 
 	await get_tree().create_timer(InvincibleTime).timeout
 	can_take_damage = true
+
+func on_death():
+	if enemy_spawner and enemy_spawner.has_method("show_game_over"):
+		enemy_spawner.show_game_over()
+#endregion

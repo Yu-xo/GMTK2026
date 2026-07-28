@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bv2oil3adk8r2"
-path="res://.godot/imported/PlayerWalk.webp-3db99f920fd287a8ea092c93bfe812ca.ctex"
+uid="uid://cdwxhnu7y5g7e"
+path="res://.godot/imported/MouseAttack.webp-f8c2fa5966490a4568c793037fcca9f2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Characters/Player/PlayerWalk.webp"
-dest_files=["res://.godot/imported/PlayerWalk.webp-3db99f920fd287a8ea092c93bfe812ca.ctex"]
+source_file="res://Assets/Characters/MouseAttack.webp"
+dest_files=["res://.godot/imported/MouseAttack.webp-f8c2fa5966490a4568c793037fcca9f2.ctex"]
 
 [params]
 

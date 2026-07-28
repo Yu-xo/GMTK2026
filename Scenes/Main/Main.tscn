@@ -6,9 +6,8 @@
 
 [node name="Main" type="Node" unique_id=1359459859]
 
-[node name="Player" parent="." unique_id=1541806321 node_paths=PackedStringArray("UpgradeUI") instance=ExtResource("1_p8rbg")]
+[node name="Player" parent="." unique_id=1541806321 instance=ExtResource("1_p8rbg")]
 position = Vector2(334, 215)
-UpgradeUI = NodePath("")
 
 [node name="UpgradeUI" parent="." unique_id=1177415299 instance=ExtResource("2_cmk6n")]
 
