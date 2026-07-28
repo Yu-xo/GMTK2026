@@ -11,7 +11,7 @@ var bomb_count: int = 1
 var bomb_drop_rate: float = 1.0
 
 var explosion_radius: float = 70.0
-var max_dmg: int = 4
+var max_dmg: int = 1
 
 var enemy_speed: float = 100.0
 

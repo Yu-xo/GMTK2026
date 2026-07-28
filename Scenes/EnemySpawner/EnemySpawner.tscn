@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cnoqh0cpw36u3" path="res://Scenes/Obejcts/Telegraph.tscn" id="2_xu5ik"]
 
 [node name="EnemySpawner" type="Node2D" unique_id=1827537512 node_paths=PackedStringArray("wavename", "tutorial_label") groups=["enemy_spawner"]]
+y_sort_enabled = true
 script = ExtResource("1_dnts2")
 wavename = NodePath("RichTextLabel")
 tutorial_label = NodePath("RichTextLabel2")

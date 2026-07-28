@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cbi3mprcowhvj"]
 
 [ext_resource type="Script" uid="uid://8dwan223y2le" path="res://Scripts/BaseBomb.gd" id="1_lydrk"]
+[ext_resource type="Texture2D" uid="uid://cecih5lxvj208" path="res://Assets/UI/circle.png" id="2_oca4r"]
 [ext_resource type="Texture2D" uid="uid://5pugir1rw8bp" path="res://Assets/Particles/Red.png" id="3_88hkj"]
 [ext_resource type="AudioStream" uid="uid://ei2p0fsvau0u" path="res://Assets/Audio/SFX/Explosion1.wav" id="4_l3ajl"]
 [ext_resource type="AudioStream" uid="uid://b6n02tuv6kxg0" path="res://Assets/Audio/SFX/reddog0607-clock-ticking-365218.mp3" id="5_oca4r"]
@@ -8,19 +9,6 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_o4lsc"]
 resource_local_to_scene = true
-
-[sub_resource type="Animation" id="Animation_vk34u"]
-resource_name = "Explode"
-length = 0.67
-
-[sub_resource type="Animation" id="Animation_lydrk"]
-length = 0.001
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_88hkj"]
-_data = {
-&"Explode": SubResource("Animation_vk34u"),
-&"RESET": SubResource("Animation_lydrk")
-}
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_j3ufa"]
 atlas = ExtResource("6_oca4r")
@@ -53,10 +41,23 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_tgmv3")
 }],
-"loop": 0,
+"loop": 1,
 "name": &"exp",
 "speed": 8.0
 }]
+
+[sub_resource type="Animation" id="Animation_vk34u"]
+resource_name = "Explode"
+length = 0.67
+
+[sub_resource type="Animation" id="Animation_lydrk"]
+length = 0.001
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_88hkj"]
+_data = {
+&"Explode": SubResource("Animation_vk34u"),
+&"RESET": SubResource("Animation_lydrk")
+}
 
 [node name="Area2D" type="Area2D" unique_id=567037619 node_paths=PackedStringArray("collision", "bomb_sprite", "explosion_particles", "blast_effect", "tick_effect")]
 script = ExtResource("1_lydrk")
@@ -65,10 +66,23 @@ bomb_sprite = NodePath("AnimatedSprite2D")
 explosion_particles = NodePath("CPUParticles2D")
 blast_effect = NodePath("BlastEffect")
 tick_effect = NodePath("TickEffect")
-max_damage = 100
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1854388100]
 shape = SubResource("CircleShape2D_o4lsc")
+debug_color = Color(0.84500366, 0.8048403, 0.5347923, 0.41960785)
+
+[node name="ExplosionArea" type="Sprite2D" parent="." unique_id=276873835]
+self_modulate = Color(0.8745098, 0.5647059, 0.79607844, 0.39215687)
+z_index = -1
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_oca4r")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=971828598]
+y_sort_enabled = true
+scale = Vector2(0.13, 0.13)
+sprite_frames = SubResource("SpriteFrames_o4lsc")
+animation = &"exp"
+autoplay = "exp"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1809202824]
 libraries/ = SubResource("AnimationLibrary_88hkj")
@@ -97,10 +111,5 @@ stream = ExtResource("4_l3ajl")
 
 [node name="TickEffect" type="AudioStreamPlayer2D" parent="." unique_id=385666078]
 stream = ExtResource("5_oca4r")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=971828598]
-scale = Vector2(0.13, 0.13)
-sprite_frames = SubResource("SpriteFrames_o4lsc")
-animation = &"exp"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

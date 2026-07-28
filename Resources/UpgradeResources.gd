@@ -4,10 +4,6 @@ class_name UpgradeRes
 enum UpgardeTypes {HPBOOST , SPEEDBOOST , DASHCD , DASHLENG , 
 BOMBCOUNT , BOMBDROPRATE , BOMBRADIUS , BOMBDMG}
 
-
-
-@export var _name : String
-
 @export var Info : String
 
 @export var Type : UpgardeTypes

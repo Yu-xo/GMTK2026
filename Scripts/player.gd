@@ -1,4 +1,6 @@
 extends CharacterBody2D
+class_name PlayerController
+static var instance : PlayerController
 
 enum States {
 	IDLE,
@@ -16,24 +18,17 @@ var last_direction := Vector2.RIGHT
 
 @onready var health: HealthController = $HealthController
 
-@onready var health_bar: TextureProgressBar = $HUD/HUDContainer/HealthBar
-@onready var bomb_hud: TextureProgressBar = $HUD/HUDContainer/BombHud
-@onready var number_of_bombs_label: Label = $HUD/HUDContainer/NumberOfBombs
 @onready var sprite: Sprite2D = $Sprites/Sprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
 @onready var dash_sound_effect: AudioStreamPlayer2D = $DashSoundEffect
 
-@export var enemy_spawner: Node
-
 @export var BombNode: PackedScene
-@onready var bomb_spawn_point: Marker2D = $BombSpawnPoint
 @export var DropRate: Timer
-
-@export var camera: Camera2D
-
 @export var UpgradeUI: Control
-var hp: int
+
+@onready var bomb_spawn_point: Marker2D = $BombSpawnPoint
+
 var move_speed: int
 
 @export var DashSpeed := 450.0
@@ -56,7 +51,14 @@ var can_drop := true
 var can_take_damage := true
 var knockback_velocity := Vector2.ZERO
 
+signal on_updated_stats()
+signal on_dropped_bomb()
 
+# is called immediately when is spawned (before ready)
+func _enter_tree() -> void:
+	instance = self
+
+# is called only after the scene is ready
 func _ready() -> void:
 	if DropRate:
 		DropRate.timeout.connect(_on_drop_timeout)
@@ -64,10 +66,8 @@ func _ready() -> void:
 	_update_stats()
 	health.on_damaged.connect(on_damaged)
 	health.on_death.connect(on_death)
-	health.on_health_changed.connect(health_changed)
-	displayed_hp = hp
 	displayed_bomb = drop_cooldown
-	_update_hud(0.0)
+	set_flash(0)
 
 func _physics_process(delta: float) -> void:
 	move_direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
@@ -81,8 +81,6 @@ func _physics_process(delta: float) -> void:
 	
 	if UpgradeUI:
 		UpgradeUI.visible = false
-
-	_update_hud(delta)
 
 	if is_dashing:
 		velocity = last_direction * DashSpeed
@@ -104,7 +102,7 @@ func _physics_process(delta: float) -> void:
 
 func _update_stats() -> void:
 	if typeof(UpgardeEffects) != TYPE_NIL:
-		hp = UpgardeEffects.max_hp
+		#health.current_health = UpgardeEffects.max_hp
 		move_speed = UpgardeEffects.max_speed
 
 		DashCooldown = UpgardeEffects.dash_cooldown
@@ -113,31 +111,10 @@ func _update_stats() -> void:
 		number_of_bombs = UpgardeEffects.bomb_count
 		drop_cooldown = UpgardeEffects.bomb_drop_rate
 
-	displayed_hp = hp
 	displayed_bomb = drop_cooldown
-	_update_hud(0.0)
-
+	on_updated_stats.emit()
 	
 #region Player Management
-func _update_hud(delta: float) -> void:
-	if health_bar == null or bomb_hud == null or number_of_bombs_label == null:
-		return
-
-	health_bar.max_value = UpgardeEffects.max_hp if typeof(UpgardeEffects) != TYPE_NIL else hp
-	displayed_hp = move_toward(displayed_hp, hp, 10.0 * delta)
-	health_bar.value = displayed_hp
-
-	number_of_bombs_label.text = str(number_of_bombs)
-
-	bomb_hud.max_value = drop_cooldown
-
-	var target := drop_cooldown
-	if !can_drop and DropRate:
-		target = drop_cooldown - DropRate.time_left
-
-	displayed_bomb = move_toward(displayed_bomb, target, drop_cooldown * 6.0 * delta)
-	bomb_hud.value = displayed_bomb
-
 func _state_handler(_delta):
 	match current_state:
 		States.IDLE, States.MOVE:
@@ -219,9 +196,6 @@ func _drop_bomb():
 	animation_player.play("bomb")
 
 	displayed_bomb = 0.0
-	if bomb_hud:
-		bomb_hud.value = 0.0
-
 	var spawn_pos = bomb_spawn_point.global_position if bomb_spawn_point else global_position
 
 	for i in range(number_of_bombs):
@@ -241,21 +215,15 @@ func _drop_bomb():
 
 func _on_drop_timeout():
 	can_drop = true
-	_update_hud(0.0)
+	on_dropped_bomb.emit()
 #endregion
 
 #region Health Management
-func health_changed(_health: int) -> void:
-	_update_hud(0)
-
 func _hurt_state(delta):
 	velocity = knockback_velocity
 	knockback_velocity = knockback_velocity.move_toward(Vector2.ZERO, 1200 * delta)
 
 func _on_hurt_box_body_entered(body: Node2D) -> void:
-	if audio_stream_player_2d:
-		audio_stream_player_2d.stop()
-
 	if !body.is_in_group("enemy"):
 		return
 
@@ -265,26 +233,35 @@ func _on_hurt_box_body_entered(body: Node2D) -> void:
 	can_take_damage = false
 	health.take_damage(1)
 
-func on_damaged(amount: int, force: float, direction: Vector2):
+func hit_player(amount: int, force: float, direction: Vector2):
+	knockback_velocity = direction * force
+	health.take_damage(amount)
+	CameraManager.instance.apply_shake(18)
+
+func on_damaged(_amount: int):
 	if !can_take_damage:
 		return
 
 	can_take_damage = false
-
-	health.damage(amount)
-
 	current_state = States.HURT
-	knockback_velocity = direction * force
 
+	set_flash(1.0)
+
+	var tween := create_tween()
+	tween.tween_method(set_flash, 1.0, 0.0, HurtTime)
+	
 	await get_tree().create_timer(HurtTime).timeout
 
-	if current_state != States.DEAD:
+	if health.is_alive():
 		current_state = States.IDLE
 
 	await get_tree().create_timer(InvincibleTime).timeout
 	can_take_damage = true
 
+func set_flash(amount: float) -> void:
+	if sprite.material:
+		sprite.material.set_shader_parameter("flash_amount", amount)
+
 func on_death():
-	if enemy_spawner and enemy_spawner.has_method("show_game_over"):
-		enemy_spawner.show_game_over()
+	EnemySpawner.instance.show_game_over()
 #endregion

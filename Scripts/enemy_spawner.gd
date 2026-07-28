@@ -1,4 +1,6 @@
 extends Node2D
+class_name EnemySpawner
+static var instance : EnemySpawner
 
 var enemy_scene: Array[PackedScene] = [
 	preload("uid://dxf7nvtn0td7k"),
@@ -65,8 +67,10 @@ var spawned_enemies: Array[CharacterBody2D]
 var round_num: int = 0
 var in_tutorial: bool = false
 
-@onready var animation_player: AnimationPlayer = $"../AnimationPlayer"
+@onready var animation_player: AnimationPlayer = $"..UI/GameStart/AnimationPlayer"
 
+func _enter_tree() -> void:
+	instance = self
 
 func _ready():
 	if end_view:
@@ -201,7 +205,7 @@ func _update_wave_label(wave_number: int) -> void:
 	if wavename == null:
 		return
 
-	wavename.text = "[center][b][font_size=32][color=gold]WAVE[/color] [wave amp=50.0 freq=5.0 connected=1][color=crimson]%d[/color][/wave][/font_size][/b][/center]" % wave_number
+	wavename.text = "[center][b][font_size=32]WAVE [wave amp=50.0 freq=5.0 connected=1]%d[/wave][/font_size][/b][/center]" % wave_number
 
 	wavename.modulate.a = 0.0
 	wavename.scale = Vector2(0.5, 0.5)
@@ -257,11 +261,12 @@ func _spawn_with_telegraph(scene: PackedScene) -> void:
 
 func show_game_over() -> void:
 	get_tree().paused = true
+	await get_tree().create_timer(0.2).timeout
 
 	if end_game_values:
 		end_game_values.bbcode_enabled = true
 		var wave_reached = round_num + 1
-		end_game_values.text = "[center][b][font_size=24]WAVES SURVIVED: [color=gold]%d[/color][/font_size][/b][/center]" % wave_reached
+		end_game_values.text = "[center][b][font_size=24]WAVES SURVIVED: %d[/font_size][/b][/center]" % wave_reached
 
 	if end_view:
 		end_view.visible = true

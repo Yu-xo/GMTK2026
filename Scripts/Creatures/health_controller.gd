@@ -5,20 +5,30 @@ signal on_damaged(amount)
 signal on_death
 signal on_health_changed(current, max)
 
-@export var max_health := 5
+@export var max_health := 300
+@export var invincible := false
 
-var health := max_health
+var current_health := max_health
 
+func _ready() -> void:
+	set_health_to_max()
 
-func reset():
-	health = max_health
-	on_health_changed.emit(health, max_health)
+func set_health_to_max():
+	set_current_health(max_health)
 
+func take_damage(damage: int):
+	if invincible:
+		damage = 0
+	
+	set_current_health(current_health - damage)
+	on_damaged.emit(damage)
 
-func take_damage(amount: int):
-	health -= amount
-	on_health_changed.emit(health, max_health)
-	on_damaged.emit(amount)
-
-	if health <= 0:
+	if !is_alive():
 		on_death.emit()
+
+func set_current_health(amount: int):
+	current_health = max(amount, 0)
+	on_health_changed.emit(current_health, max_health)
+	
+func is_alive() -> bool:
+	return current_health > 0

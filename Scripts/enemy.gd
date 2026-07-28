@@ -6,7 +6,6 @@ signal enemy_died
 @export var enemy_res: EnemyResource
 
 @onready var player: CharacterBody2D = get_tree().get_first_node_in_group("player")
-@onready var enemy_spawner: Node2D = get_tree().get_first_node_in_group("enemy_spawner")
 
 @export var projectile_scene: PackedScene
 
@@ -69,9 +68,7 @@ func _take_damage(damage_value: int) -> void:
 	if enemy_res.hp <= 0:
 		enemy_died.emit()
 
-		if enemy_spawner.has_method("_enemy_killed"):
-			enemy_spawner._enemy_killed(self)
-
+		EnemySpawner.instance._enemy_killed(self)
 		_die_animation()
 		
 func _die_animation() -> void:
