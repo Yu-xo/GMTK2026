@@ -5,12 +5,19 @@
 [ext_resource type="PackedScene" uid="uid://bs1e6rjc61nec" path="res://Scenes/EnemySpawner/EnemySpawner.tscn" id="2_wgpax"]
 [ext_resource type="PackedScene" uid="uid://oyvcc75fvess" path="res://Scenes/EnemySpawner/SpawnMarker.tscn" id="3_8l0as"]
 [ext_resource type="PackedScene" uid="uid://cvewnspltwaul" path="res://Scenes/UI/upgrade_ui.tscn" id="4_jfxyn"]
+[ext_resource type="Script" uid="uid://cvhw082bp51nq" path="res://Scenes/UI/game_hud.gd" id="6_4x8ph"]
+[ext_resource type="Texture2D" uid="uid://dkt7br361w6ug" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/health_bar_background.png" id="6_8hlaw"]
 [ext_resource type="Texture2D" uid="uid://o73uwwalmwqa" path="res://Assets/Background/2409_Sem_Titulo_20260726090724.webp" id="6_776he"]
+[ext_resource type="Texture2D" uid="uid://cqtxxhuvdjedv" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/health_bar_overlay.png" id="7_4x8ph"]
 [ext_resource type="Script" uid="uid://wntd57ggeesb" path="res://Scenes/UI/game_over_screen.gd" id="7_5gib3"]
 [ext_resource type="Texture2D" uid="uid://bxg00rkq0hrj4" path="res://Assets/UI/CardFrontSide.webp" id="7_k76x8"]
+[ext_resource type="Texture2D" uid="uid://cq8cnpt3awmfe" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/health_bar_fill.png" id="8_lme7l"]
 [ext_resource type="FontFile" uid="uid://b3t1uvw32ff76" path="res://Assets/Fonts/static/WinkyRough-Bold.ttf" id="8_piqhl"]
 [ext_resource type="Texture2D" uid="uid://bwkdv43n3l387" path="res://Assets/UI/Round/RoundButton2_wood.png" id="8_v1wv5"]
+[ext_resource type="Texture2D" uid="uid://daenfftcefnft" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/bomb_bar_background.png" id="9_j8ne6"]
 [ext_resource type="Texture2D" uid="uid://d0v6pdqpm2jq" path="res://Assets/UI/Round/RoundButton2_white.png" id="9_piqhl"]
+[ext_resource type="Texture2D" uid="uid://bw3h0e81co7ck" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/bomb_bar_overlay.png" id="10_qr3r7"]
+[ext_resource type="Texture2D" uid="uid://cumpaeni6g42" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/bomb_bar_fill.png" id="11_ir8qt"]
 [ext_resource type="AudioStream" uid="uid://bp6vxhwpampce" path="res://Assets/Audio/Track/Luca Lotufo - gameplay theme 5 2026-07-26 12_04_120918276.mp3" id="11_piqhl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o4lsc"]
@@ -55,9 +62,6 @@ _data = {
 &"Start": SubResource("Animation_776he")
 }
 
-[sub_resource type="Theme" id="Theme_k76x8"]
-default_font = ExtResource("8_piqhl")
-
 [sub_resource type="Theme" id="Theme_o4lsc"]
 default_font = ExtResource("8_piqhl")
 
@@ -85,13 +89,7 @@ script = ExtResource("1_u2c4d")
 position = Vector2(550, 326)
 UpgradeUI = NodePath("../UI/UpgradeUI")
 
-[node name="EnemySpawner" parent="." unique_id=1827537512 node_paths=PackedStringArray("end_view", "color_rect", "ValueContiner", "try_again", "rich_text_label", "end_game_values", "spawn_points", "UpgradeUI") instance=ExtResource("2_wgpax")]
-end_view = NodePath("../UI/GameOverScreen")
-color_rect = NodePath("../UI/GameOverScreen/Background")
-ValueContiner = NodePath("../UI/GameOverScreen/TextureRect")
-try_again = NodePath("../UI/GameOverScreen/TextureRect/TryAgain")
-rich_text_label = NodePath("../UI/GameOverScreen/TextureRect/TryAgain/RichTextLabel")
-end_game_values = NodePath("../UI/GameOverScreen/TextureRect/EndGameValues")
+[node name="EnemySpawner" parent="." unique_id=1827537512 node_paths=PackedStringArray("spawn_points", "UpgradeUI") instance=ExtResource("2_wgpax")]
 spawn_points = [NodePath("../SpawnPointHolder/Marker2D"), NodePath("../SpawnPointHolder/Marker2D2"), NodePath("../SpawnPointHolder/Marker2D3"), NodePath("../SpawnPointHolder/Marker2D4"), NodePath("../SpawnPointHolder/Marker2D5"), NodePath("../SpawnPointHolder/Marker2D6"), NodePath("../SpawnPointHolder/Marker2D7"), NodePath("../SpawnPointHolder/Marker2D8"), NodePath("../SpawnPointHolder/Marker2D9"), NodePath("../SpawnPointHolder/Marker2D10"), NodePath("../SpawnPointHolder/Marker2D11"), NodePath("../SpawnPointHolder/Marker2D12"), NodePath("../SpawnPointHolder/Marker2D13"), NodePath("../SpawnPointHolder/Marker2D14"), NodePath("../SpawnPointHolder/Marker2D15"), NodePath("../SpawnPointHolder/Marker2D16")]
 UpgradeUI = NodePath("../UI/UpgradeUI")
 
@@ -183,6 +181,70 @@ color = Color(0, 0, 0, 1)
 root_node = NodePath("../../..")
 libraries/ = SubResource("AnimationLibrary_1hub2")
 
+[node name="GameHud" type="Control" parent="UI" unique_id=2074138187]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_4x8ph")
+
+[node name="Label" type="Label" parent="UI/GameHud" unique_id=1964014199]
+visible = false
+layout_mode = 0
+offset_left = 24.0
+offset_top = 41.0
+offset_right = 76.0
+offset_bottom = 64.0
+text = "Health"
+
+[node name="HealthBar" type="TextureProgressBar" parent="UI/GameHud" unique_id=1784729484]
+layout_mode = 0
+offset_left = 114.0
+offset_top = 19.0
+offset_right = 367.0
+offset_bottom = 89.0
+scale = Vector2(0.5, 0.5)
+value = 50.0
+texture_under = ExtResource("6_8hlaw")
+texture_over = ExtResource("7_4x8ph")
+texture_progress = ExtResource("8_lme7l")
+
+[node name="BombHud" type="TextureProgressBar" parent="UI/GameHud" unique_id=1661851189]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 14.0
+offset_right = 159.0
+offset_bottom = 178.0
+scale = Vector2(0.64, 0.64)
+value = 44.0
+fill_mode = 3
+texture_under = ExtResource("9_j8ne6")
+texture_over = ExtResource("10_qr3r7")
+texture_progress = ExtResource("11_ir8qt")
+
+[node name="BombCountLabel" type="Label" parent="UI/GameHud/BombHud" unique_id=1167846634]
+z_index = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -74.0
+offset_top = -51.5
+offset_right = -13.0625
+offset_bottom = -14.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("8_piqhl")
+theme_override_font_sizes/font_size = 24
+text = "22"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="UpgradeUI" parent="UI" unique_id=1177415299 node_paths=PackedStringArray("WaveSpawner") instance=ExtResource("4_jfxyn")]
 visible = false
 WaveSpawner = NodePath("../../EnemySpawner")
@@ -208,43 +270,59 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.29411766)
 
-[node name="TextureRect" type="TextureRect" parent="UI/GameOverScreen" unique_id=1518892750]
-layout_mode = 0
-offset_left = 471.0
-offset_top = 148.0
-offset_right = 671.0
-offset_bottom = 448.0
+[node name="Panel" type="TextureRect" parent="UI/GameOverScreen" unique_id=1518892750]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -137.5
+offset_top = -206.25
+offset_right = 137.5
+offset_bottom = 206.25
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("7_k76x8")
 
-[node name="TryAgain" type="TextureButton" parent="UI/GameOverScreen/TextureRect" unique_id=66035810]
-layout_mode = 0
-offset_left = 57.0
-offset_top = 232.99994
-offset_right = 419.0
-offset_bottom = 392.99994
+[node name="TryAgainButton" type="TextureButton" parent="UI/GameOverScreen/Panel" unique_id=1317750960]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 84.49999
+offset_top = 316.25
+offset_right = 171.5
+offset_bottom = 63.75
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(0.24, 0.24)
-theme = SubResource("Theme_k76x8")
 texture_normal = ExtResource("8_v1wv5")
 texture_pressed = ExtResource("9_piqhl")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="UI/GameOverScreen/TextureRect/TryAgain" unique_id=412862244]
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/GameOverScreen/Panel/TryAgainButton" unique_id=412862244]
 layout_mode = 0
-offset_left = 62.50003
-offset_top = 25.000229
-offset_right = 330.83353
-offset_bottom = 110.00023
+offset_left = 62.5
+offset_top = 25.000244
+offset_right = 330.8335
+offset_bottom = 110.000244
 mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 58
 bbcode_enabled = true
 text = "Try Again"
 
-[node name="EndGameValues" type="RichTextLabel" parent="UI/GameOverScreen/TextureRect" unique_id=489035008]
-layout_mode = 0
-offset_left = 39.0
-offset_top = 73.0
-offset_right = 151.0
-offset_bottom = 215.0
+[node name="EndGameValues" type="RichTextLabel" parent="UI/GameOverScreen/Panel" unique_id=489035008]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 50.5
+offset_top = 93.25
+offset_right = -40.5
+offset_bottom = -43.25
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 theme = SubResource("Theme_o4lsc")
 theme_override_colors/default_color = Color(0.36862746, 0.07450981, 0.23529412, 1)
@@ -255,3 +333,5 @@ text = "Wave Number"
 stream = ExtResource("11_piqhl")
 autoplay = true
 parameters/looping = true
+
+[connection signal="pressed" from="UI/GameOverScreen/Panel/TryAgainButton" to="UI/GameOverScreen" method="_on_try_again_button_pressed"]

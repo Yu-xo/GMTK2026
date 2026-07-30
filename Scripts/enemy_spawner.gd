@@ -8,14 +8,7 @@ var enemy_scene: Array[PackedScene] = [
 	preload("uid://udbwv1trouo1")
 ]
 
-@export_group("End Screen")
-@export var panel: Control
-@export var end_view: Control
-@export var color_rect: ColorRect
-@export var ValueContiner: TextureRect
-@export var try_again: TextureButton
-@export var rich_text_label: RichTextLabel
-@export var end_game_values: RichTextLabel
+@export var skip_tutorial := true
 
 enum EnemyType {MELEE, RANGE, TANK}
 enum SpawnPattern {ASCENDING, MIX, BOTH}
@@ -29,6 +22,8 @@ enum SpawnPattern {ASCENDING, MIX, BOTH}
 @export var UpgradeUI: Control
 
 var is_spawning: bool = false
+
+signal on_game_ended()
 
 var melee_wave: Array[int] = [
 	3, 4, 5,
@@ -67,18 +62,12 @@ var spawned_enemies: Array[CharacterBody2D]
 var round_num: int = 0
 var in_tutorial: bool = false
 
-@onready var animation_player: AnimationPlayer = $"..UI/GameStart/AnimationPlayer"
+@onready var animation_player: AnimationPlayer = $"../UI/GameStart/AnimationPlayer"
 
 func _enter_tree() -> void:
 	instance = self
 
 func _ready():
-	if end_view:
-		end_view.visible = false
-
-	if try_again:
-		try_again.pressed.connect(_on_try_again_pressed)
-
 	if animation_player:
 		animation_player.play("Start")
 		await animation_player.animation_finished
@@ -97,15 +86,16 @@ func _get_display_label() -> RichTextLabel:
 
 func _start_game_sequence() -> void:
 	in_tutorial = true
+	
+	if !skip_tutorial:
+		await _display_tutorial_step("[center][b][font_size=28][color=gold]MOVE[/color]\nPress [color=cyan]W, A, S, D[/color] to Move[/font_size][/b][/center]")
+		await _wait_for_input_action(["ui_up", "ui_down", "ui_left", "ui_right"])
 
-	await _display_tutorial_step("[center][b][font_size=28][color=gold]MOVE[/color]\nPress [color=cyan]W, A, S, D[/color] to Move[/font_size][/b][/center]")
-	await _wait_for_input_action(["ui_up", "ui_down", "ui_left", "ui_right"])
+		await _display_tutorial_step("[center][b][font_size=28][color=gold]ATTACK[/color]\nPress [color=crimson]Left Click[/color] to Drop Bomb[/font_size][/b][/center]")
+		await _wait_for_input_action(["attack", "attack"])
 
-	await _display_tutorial_step("[center][b][font_size=28][color=gold]ATTACK[/color]\nPress [color=crimson]Left Click[/color] to Drop Bomb[/font_size][/b][/center]")
-	await _wait_for_input_action(["attack", "attack"])
-
-	await _display_tutorial_step("[center][b][font_size=28][color=gold]DASH[/color]\nPress [color=springgreen]Right Click[/color] to Dash[/font_size][/b][/center]")
-	await _wait_for_input_action(["dash"])
+		await _display_tutorial_step("[center][b][font_size=28][color=gold]DASH[/color]\nPress [color=springgreen]Right Click[/color] to Dash[/font_size][/b][/center]")
+		await _wait_for_input_action(["dash"])
 
 	await _display_tutorial_step("[center][b][font_size=36][wave amp=50.0 freq=5.0 connected=1][color=gold]GOOD LUCK![/color][/wave][/font_size][/b][/center]", 1.5)
 
@@ -261,47 +251,7 @@ func _spawn_with_telegraph(scene: PackedScene) -> void:
 
 func show_game_over() -> void:
 	get_tree().paused = true
-	await get_tree().create_timer(0.2).timeout
-
-	if end_game_values:
-		end_game_values.bbcode_enabled = true
-		var wave_reached = round_num + 1
-		end_game_values.text = "[center][b][font_size=24]WAVES SURVIVED: %d[/font_size][/b][/center]" % wave_reached
-
-	if end_view:
-		end_view.visible = true
-
-	if panel:
-		panel.position = Vector2(0, -800)
-
-	if ValueContiner: ValueContiner.modulate.a = 0.0
-	if end_game_values: end_game_values.modulate.a = 0.0
-	if try_again:
-		try_again.modulate.a = 0.0
-		try_again.disabled = true
-
-	var tween := create_tween()
-	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-
-	if panel:
-		tween.tween_property(
-			panel,
-			"position:y",
-			0.0,
-			0.6
-		).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
-
-	tween.tween_interval(0.15)
-
-	if ValueContiner: tween.parallel().tween_property(ValueContiner, "modulate:a", 1.0, 0.25)
-	if end_game_values: tween.parallel().tween_property(end_game_values, "modulate:a", 1.0, 0.25)
-	if try_again: tween.parallel().tween_property(try_again, "modulate:a", 1.0, 0.25)
-
-	await tween.finished
-
-	if try_again:
-		try_again.disabled = false
-
+	on_game_ended.emit()
 
 func _on_try_again_pressed():
 	get_tree().paused = false

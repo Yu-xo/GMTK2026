@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://dkv7pp5hwtt3i"]
+
+[ext_resource type="Texture2D" uid="uid://dkt7br361w6ug" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/health_bar_background.png" id="1_utqt6"]
+[ext_resource type="Texture2D" uid="uid://cqtxxhuvdjedv" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/health_bar_overlay.png" id="2_bvnka"]
+[ext_resource type="Texture2D" uid="uid://cq8cnpt3awmfe" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/health_bar_fill.png" id="3_y6c62"]
+[ext_resource type="Texture2D" uid="uid://daenfftcefnft" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/bomb_bar_background.png" id="4_pusvq"]
+[ext_resource type="Texture2D" uid="uid://bw3h0e81co7ck" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/bomb_bar_overlay.png" id="5_uwj77"]
+[ext_resource type="Texture2D" uid="uid://cumpaeni6g42" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/bomb_bar_fill.png" id="6_21cjq"]
+
+[node name="GameHud" type="Control" unique_id=2074138187]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="." unique_id=1964014199]
+visible = false
+layout_mode = 0
+offset_left = 24.0
+offset_top = 41.0
+offset_right = 76.0
+offset_bottom = 64.0
+text = "Health"
+
+[node name="NumberOfBombs" type="Label" parent="." unique_id=1167846634]
+visible = false
+z_index = 1
+layout_mode = 0
+offset_left = 84.0
+offset_top = 120.0
+offset_right = 136.0
+offset_bottom = 143.0
+text = "speed"
+
+[node name="HealthBar" type="TextureProgressBar" parent="." unique_id=1784729484]
+layout_mode = 0
+offset_left = 149.0
+offset_top = 13.0
+offset_right = 402.0
+offset_bottom = 83.0
+value = 50.0
+texture_under = ExtResource("1_utqt6")
+texture_over = ExtResource("2_bvnka")
+texture_progress = ExtResource("3_y6c62")
+
+[node name="BombHud" type="TextureProgressBar" parent="." unique_id=1661851189]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+value = 44.0
+fill_mode = 3
+texture_under = ExtResource("4_pusvq")
+texture_over = ExtResource("5_uwj77")
+texture_progress = ExtResource("6_21cjq")

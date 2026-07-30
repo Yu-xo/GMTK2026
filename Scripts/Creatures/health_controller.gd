@@ -3,7 +3,7 @@ class_name HealthController
 
 signal on_damaged(amount)
 signal on_death
-signal on_health_changed(current, max)
+signal on_health_changed(current)
 
 @export var max_health := 300
 @export var invincible := false
@@ -28,7 +28,7 @@ func take_damage(damage: int):
 
 func set_current_health(amount: int):
 	current_health = max(amount, 0)
-	on_health_changed.emit(current_health, max_health)
+	on_health_changed.emit(current_health)
 	
 func is_alive() -> bool:
 	return current_health > 0

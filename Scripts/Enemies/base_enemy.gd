@@ -2,7 +2,6 @@ extends CharacterBody2D
 
 signal enemy_died
 
-
 @export var enemy_res: EnemyResource
 
 @onready var player: CharacterBody2D = get_tree().get_first_node_in_group("player")
@@ -19,6 +18,7 @@ signal enemy_died
 var move_direction: Vector2
 var push_velocity: Vector2 = Vector2.ZERO
 
+var can_attack := true
 
 func _ready() -> void:
 	enemy_res = enemy_res.duplicate(true)
@@ -291,3 +291,27 @@ func _on_reposition_timer_timeout() -> void:
 
 func _on_rush_cooldown_timer_timeout() -> void:
 	enemy_res.can_rush = true
+
+func _on_hit_box_body_entered(body: Node2D) -> void:
+	if !enemy_res.can_attack:
+		return
+		
+	# Check if we're colliding with the player
+	if body != player:
+		print("Not player")
+		return
+		
+	print("Player")
+	enemy_res.can_attack = false
+
+	var push_dir := (body.global_position - global_position).normalized()
+
+	body.hit_player(
+		enemy_res.contact_damage,
+		enemy_res.knockback,
+		push_dir,
+	)
+
+	get_tree().create_timer(enemy_res.attack_cooldown).timeout.connect(
+		func(): enemy_res.can_attack = true
+	)

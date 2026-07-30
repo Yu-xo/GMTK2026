@@ -16,9 +16,14 @@ enum EnemyState {IDLE, CHASE, ATTACK, REPOSITION}
 var can_shoot: bool = true
 var reposition_target: Vector2
 
-
 @export var rush_speed: int = 500
 @export var rush_cooldown: float = 5.0
 @export var rush_range: int = 5
 var rush_position: Vector2
 var can_rush: bool = true
+
+@export_group("Combat")
+@export var contact_damage: int = 1
+@export var knockback: float = 500.0
+@export var attack_cooldown: float = 0.5
+var can_attack := true

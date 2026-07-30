@@ -223,19 +223,12 @@ func _hurt_state(delta):
 	velocity = knockback_velocity
 	knockback_velocity = knockback_velocity.move_toward(Vector2.ZERO, 1200 * delta)
 
-func _on_hurt_box_body_entered(body: Node2D) -> void:
-	if !body.is_in_group("enemy"):
+func hit_player(damage: int, force: float, direction: Vector2):
+	if current_state == States.HURT or current_state == States.DEAD:
 		return
-
-	if !can_take_damage:
-		return
-
-	can_take_damage = false
-	health.take_damage(1)
-
-func hit_player(amount: int, force: float, direction: Vector2):
+	
+	health.take_damage(damage)
 	knockback_velocity = direction * force
-	health.take_damage(amount)
 	CameraManager.instance.apply_shake(18)
 
 func on_damaged(_amount: int):
