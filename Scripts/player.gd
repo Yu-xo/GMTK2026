@@ -22,6 +22,9 @@ var last_direction := Vector2.RIGHT
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
 @onready var dash_sound_effect: AudioStreamPlayer2D = $DashSoundEffect
+@onready var hit_sound_effect: AudioStreamPlayer2D = $OnHitSoundEffect
+@onready var laugh_sound_effect: AudioStreamPlayer2D = $LaughSoundEffect
+
 
 @export var BombNode: PackedScene
 @export var DropRate: Timer
@@ -194,6 +197,7 @@ func _drop_bomb():
 	can_drop = false
 
 	animation_player.play("bomb")
+	laugh_sound_effect.play()
 
 	displayed_bomb = 0.0
 	var spawn_pos = bomb_spawn_point.global_position if bomb_spawn_point else global_position
@@ -229,6 +233,7 @@ func hit_player(damage: int, force: float, direction: Vector2):
 	
 	health.take_damage(damage)
 	knockback_velocity = direction * force
+	hit_sound_effect.play()
 	CameraManager.instance.apply_shake(18)
 
 func on_damaged(_amount: int):

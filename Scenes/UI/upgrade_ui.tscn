@@ -4,7 +4,7 @@
 [ext_resource type="FontFile" uid="uid://b3t1uvw32ff76" path="res://Assets/Fonts/static/WinkyRough-Bold.ttf" id="1_nhgha"]
 [ext_resource type="Script" uid="uid://dbu26i1iinwcm" path="res://Resources/UpgradeResources.gd" id="2_nhgha"]
 [ext_resource type="Resource" uid="uid://bwximxwpp02ai" path="res://Data/SpeedBoost.tres" id="3_cqseh"]
-[ext_resource type="Resource" uid="uid://dn4g4wddb8qyx" path="res://Data/HPBoost.tres" id="4_i4vmm"]
+[ext_resource type="Resource" uid="uid://dn4g4wddb8qyx" path="res://Data/HPboost.tres" id="4_i4vmm"]
 [ext_resource type="Resource" uid="uid://ddryxia3wlga5" path="res://Data/BombCount.tres" id="5_7rnwv"]
 [ext_resource type="Resource" uid="uid://cvdag3kln3m7c" path="res://Data/DashCD.tres" id="6_u40v8"]
 [ext_resource type="Resource" uid="uid://ct6if0pvbt0us" path="res://Data/DashLen.tres" id="7_7rlor"]
@@ -13,9 +13,27 @@
 [ext_resource type="Resource" uid="uid://cfn15bsk0cknv" path="res://Data/Explosionzone.tres" id="10_fwbe6"]
 [ext_resource type="Texture2D" uid="uid://btav3i67oftbo" path="res://Assets/UI/CardBackSide.webp" id="12_i4vmm"]
 [ext_resource type="Texture2D" uid="uid://bupmi4duovo2q" path="res://Assets/UI/HUD/drive-download-20260726T093408Z-1-001/2403 Sem Título_20260725141943.png" id="13_7rnwv"]
+[ext_resource type="AudioStream" uid="uid://dcxeky3qivixo" path="res://Assets/Audio/SFX/Whistle/WhistleEnd.wav" id="14_u40v8"]
+[ext_resource type="AudioStream" uid="uid://bau3whmcwviv5" path="res://Assets/Audio/SFX/Whistle/WhistleStart.wav" id="15_7rlor"]
+[ext_resource type="AudioStream" uid="uid://ci7n2kw2ponu7" path="res://Assets/Audio/SFX/Yay/FunnyYay.mp3" id="16_7rlor"]
 
 [sub_resource type="Theme" id="Theme_fn2cp"]
 default_font = ExtResource("1_nhgha")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_0qln0"]
+playback_mode = 1
+random_pitch = 1.1892071
+random_volume_offset_db = 1.0
+streams_count = 2
+stream_0/stream = ExtResource("14_u40v8")
+stream_1/stream = ExtResource("15_7rlor")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_j8xpi"]
+playback_mode = 1
+random_pitch = 1.1892071
+random_volume_offset_db = 1.0
+streams_count = 1
+stream_0/stream = ExtResource("16_7rlor")
 
 [node name="UpgradePanelHolder" type="Control" unique_id=671205172 node_paths=PackedStringArray("panels", "effect_labels", "buttons", "front_sides", "back_sides") groups=["ui"]]
 process_mode = 3
@@ -257,3 +275,9 @@ grow_vertical = 2
 mouse_filter = 2
 mouse_default_cursor_shape = 1
 texture = ExtResource("13_7rnwv")
+
+[node name="OpenSoundEffect" type="AudioStreamPlayer2D" parent="." unique_id=1787883834]
+stream = SubResource("AudioStreamRandomizer_0qln0")
+
+[node name="FinishSoundEffect" type="AudioStreamPlayer2D" parent="." unique_id=464409578]
+stream = SubResource("AudioStreamRandomizer_j8xpi")

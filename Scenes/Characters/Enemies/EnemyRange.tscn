@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://d2riijei28h63" path="res://Assets/Characters/RangedAttack.webp" id="4_8vgbl"]
 [ext_resource type="Shader" uid="uid://u17b4xsm82w3" path="res://Data/Materials/HitEffect.gdshader" id="4_45eag"]
 [ext_resource type="Texture2D" uid="uid://dl01rlpepvo0v" path="res://Assets/Characters/RangedWalk.webp" id="5_45eag"]
+[ext_resource type="AudioStream" uid="uid://dcrv4va3kyt1c" path="res://Assets/Audio/SFX/Squeek/Squeek2_Floraphonic.wav" id="7_u51h5"]
+[ext_resource type="AudioStream" uid="uid://dm0xtiy4m8qc1" path="res://Assets/Audio/SFX/Squeek/Squeek5_Floraphonic.wav" id="8_0qln0"]
 
 [sub_resource type="Resource" id="Resource_v4mj0"]
 resource_local_to_scene = true
@@ -92,6 +94,14 @@ animations = [{
 "speed": 8.0
 }]
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_6m0uf"]
+playback_mode = 1
+random_pitch = 1.1892071
+random_volume_offset_db = 1.0
+streams_count = 2
+stream_0/stream = ExtResource("7_u51h5")
+stream_1/stream = ExtResource("8_0qln0")
+
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=736836025 node_paths=PackedStringArray("animate")]
 collision_mask = 0
 motion_mode = 1
@@ -122,6 +132,12 @@ sprite_frames = SubResource("SpriteFrames_o4lsc")
 animation = &"attack"
 frame = 3
 frame_progress = 1.0
+
+[node name="OnHitSoundEffect" type="AudioStreamPlayer2D" parent="." unique_id=1818155432]
+stream = SubResource("AudioStreamRandomizer_6m0uf")
+
+[node name="AttackSoundEffect" type="AudioStreamPlayer2D" parent="." unique_id=590493655]
+stream = SubResource("AudioStreamRandomizer_6m0uf")
 
 [connection signal="timeout" from="ShotCooldownTimer" to="." method="_on_shot_cooldown_timer_timeout"]
 [connection signal="timeout" from="RepositionTimer" to="." method="_on_reposition_timer_timeout"]

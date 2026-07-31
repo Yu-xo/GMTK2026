@@ -5,6 +5,8 @@
 [ext_resource type="Shader" uid="uid://u17b4xsm82w3" path="res://Data/Materials/HitEffect.gdshader" id="3_48jod"]
 [ext_resource type="Texture2D" uid="uid://k1cyejudkyqk" path="res://Assets/Characters/MouseWalk.webp" id="3_ndlei"]
 [ext_resource type="Texture2D" uid="uid://cdwxhnu7y5g7e" path="res://Assets/Characters/MouseAttack.webp" id="3_vi0vr"]
+[ext_resource type="AudioStream" uid="uid://ctlvn80r8xn6v" path="res://Assets/Audio/SFX/Ough/Ough_Freesound.wav" id="6_gp5to"]
+[ext_resource type="AudioStream" uid="uid://betaeguojbewd" path="res://Assets/Audio/SFX/Ough/Umph_Freesound.wav" id="7_pkpit"]
 
 [sub_resource type="Resource" id="Resource_v4mj0"]
 resource_local_to_scene = true
@@ -92,6 +94,12 @@ animations = [{
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3slmb"]
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_48jod"]
+playback_mode = 1
+streams_count = 2
+stream_0/stream = ExtResource("6_gp5to")
+stream_1/stream = ExtResource("7_pkpit")
+
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=736836025 node_paths=PackedStringArray("animate")]
 collision_mask = 0
 motion_mode = 1
@@ -118,5 +126,8 @@ autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=1049938046]
 shape = SubResource("RectangleShape2D_3slmb")
+
+[node name="OnHitSoundEffect" type="AudioStreamPlayer2D" parent="." unique_id=1931496310]
+stream = SubResource("AudioStreamRandomizer_48jod")
 
 [connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]

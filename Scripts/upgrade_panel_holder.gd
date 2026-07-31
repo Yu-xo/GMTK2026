@@ -22,6 +22,9 @@ extends Control
 
 @onready var player = get_tree().get_first_node_in_group("player")
 
+@onready var open_sound_effect: AudioStreamPlayer2D = $OpenSoundEffect
+@onready var finish_sound_effect: AudioStreamPlayer2D = $FinishSoundEffect
+
 var current_upgrades: Array[UpgradeRes]
 var original_positions := []
 var is_animating: bool = false
@@ -58,6 +61,7 @@ func _on_button_pressed(index: int) -> void:
 func open_upgrade_screen():
 	visible = true
 	current_upgrades.clear()
+	open_sound_effect.play()
 
 	var available := upgrade_info.duplicate()
 	available.shuffle()
@@ -146,7 +150,8 @@ func _on_upgrade_selected(index: int):
 		return
 
 	is_animating = true
-
+	finish_sound_effect.play()
+	
 	match upgrade.Type:
 		UpgradeRes.UpgardeTypes.HPBOOST:
 			UpgardeEffects.max_hp += upgrade.UPhp

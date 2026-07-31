@@ -20,6 +20,10 @@ var push_velocity: Vector2 = Vector2.ZERO
 
 var can_attack := true
 
+@onready var hit_sound_effect: AudioStreamPlayer2D = $OnHitSoundEffect
+var attack_sound_effect: AudioStreamPlayer2D
+
+
 func _ready() -> void:
 	enemy_res = enemy_res.duplicate(true)
 
@@ -32,11 +36,14 @@ func _ready() -> void:
 		enemy_res.EnemyType.RANGE:
 			$ShotCooldownTimer.wait_time = enemy_res.shot_cooldown
 			$RepositionTimer.wait_time = enemy_res.reposition_time
+			attack_sound_effect = $AttackSoundEffect
 
 	match enemy_res.enemy_type:
 		enemy_res.EnemyType.TANK:
 			$RushCooldownTimer.wait_time = enemy_res.rush_cooldown
 			$RepositionTimer.wait_time = enemy_res.reposition_time
+			attack_sound_effect = $AttackSoundEffect
+
 
 
 
@@ -62,12 +69,13 @@ func look_direction():
 
 func _take_damage(damage_value: int) -> void:
 	enemy_res.hp -= damage_value
+	hit_sound_effect.play()
 
 	DamageNumber._display_number(damage_value, $Marker2D.global_position)
 
 	if enemy_res.hp <= 0:
 		enemy_died.emit()
-
+		
 		EnemySpawner.instance._enemy_killed(self)
 		_die_animation()
 		
@@ -161,7 +169,7 @@ func _ai_range() -> void:
 				await animate.animation_finished
 
 			if enemy_res.can_shoot:
-
+				attack_sound_effect.play()
 				var projectile = projectile_scene.instantiate() as Area2D
 
 				get_tree().current_scene.add_child(projectile)
@@ -175,9 +183,9 @@ func _ai_range() -> void:
 				$ShotCooldownTimer.start()
 				$RepositionTimer.start()
 
-				enemy_res.reposition_target = position + Vector2(
-					randf_range(-20, 20),
-					randf_range(-20, 20)
+				enemy_res.reposition_target = player.position + Vector2(
+					randf_range(-50, 50),
+					randf_range(-50, 50)
 				)
 
 			else:
@@ -188,7 +196,7 @@ func _ai_range() -> void:
 
 					$RepositionTimer.start()
 
-					enemy_res.reposition_target = position + Vector2(
+					enemy_res.reposition_target = player.position + Vector2(
 						randf_range(-50, 50),
 						randf_range(-50, 50)
 					)
@@ -243,6 +251,8 @@ func _ai_tank() -> void:
 					move_direction = (enemy_res.rush_position - position).normalized()
 
 					velocity = move_direction * enemy_res.rush_speed
+					attack_sound_effect.play()
+
 
 				else:
 
@@ -253,7 +263,7 @@ func _ai_tank() -> void:
 					$RushCooldownTimer.start()
 					$RepositionTimer.start()
 
-					enemy_res.reposition_target = position + Vector2(
+					enemy_res.reposition_target = player.position + Vector2(
 						randf_range(-500, 500),
 						randf_range(-500, 500)
 					)
@@ -266,7 +276,7 @@ func _ai_tank() -> void:
 
 					$RepositionTimer.start()
 
-					enemy_res.reposition_target = position + Vector2(
+					enemy_res.reposition_target = player.position + Vector2(
 						randf_range(-50, 50),
 						randf_range(-50, 50)
 					)

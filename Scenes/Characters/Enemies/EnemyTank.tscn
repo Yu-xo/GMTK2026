@@ -3,6 +3,10 @@
 [ext_resource type="Script" uid="uid://dnwjeuhtuyy07" path="res://Scripts/Enemies/base_enemy.gd" id="1_gg154"]
 [ext_resource type="Script" uid="uid://co1jxn5afii0q" path="res://Resources/enemy_res.gd" id="2_21s23"]
 [ext_resource type="Texture2D" uid="uid://b1qsnv71x0o78" path="res://Assets/Characters/sprite_sheet_2_1.webp" id="4_21s23"]
+[ext_resource type="AudioStream" uid="uid://ctlvn80r8xn6v" path="res://Assets/Audio/SFX/Ough/Ough_Freesound.wav" id="4_48e41"]
+[ext_resource type="AudioStream" uid="uid://betaeguojbewd" path="res://Assets/Audio/SFX/Ough/Umph_Freesound.wav" id="5_yaosy"]
+[ext_resource type="AudioStream" uid="uid://bu75gao7yb2xh" path="res://Assets/Audio/SFX/Squeek/Squeek1_Floraphonic.wav" id="6_mxtws"]
+[ext_resource type="AudioStream" uid="uid://dm0xtiy4m8qc1" path="res://Assets/Audio/SFX/Squeek/Squeek5_Floraphonic.wav" id="7_tvpc6"]
 
 [sub_resource type="Resource" id="Resource_v4mj0"]
 resource_local_to_scene = true
@@ -52,6 +56,20 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_mxtws"]
+playback_mode = 1
+streams_count = 2
+stream_0/stream = ExtResource("4_48e41")
+stream_1/stream = ExtResource("5_yaosy")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_2swvv"]
+playback_mode = 1
+random_pitch = 1.1892071
+random_volume_offset_db = 1.0
+streams_count = 2
+stream_0/stream = ExtResource("6_mxtws")
+stream_1/stream = ExtResource("7_tvpc6")
+
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=736836025 node_paths=PackedStringArray("animate")]
 collision_mask = 0
 motion_mode = 1
@@ -77,6 +95,12 @@ position = Vector2(0, -32)
 scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_o4lsc")
 animation = &"walk"
+
+[node name="OnHitSoundEffect" type="AudioStreamPlayer2D" parent="." unique_id=1483501430]
+stream = SubResource("AudioStreamRandomizer_mxtws")
+
+[node name="AttackSoundEffect" type="AudioStreamPlayer2D" parent="." unique_id=2012877126]
+stream = SubResource("AudioStreamRandomizer_2swvv")
 
 [connection signal="timeout" from="RushCooldownTimer" to="." method="_on_rush_cooldown_timer_timeout"]
 [connection signal="timeout" from="RepositionTimer" to="." method="_on_reposition_timer_timeout"]
