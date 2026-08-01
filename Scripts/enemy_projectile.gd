@@ -34,6 +34,7 @@ func _on_body_entered(hit_object: Node2D) -> void:
 
 		var push_dir = projectile_direction.normalized()
 
-		hit_object._hit_player(damage, knockback, push_dir)
+		if hit_object. has_meta("hit_player"):
+			hit_object.hit_player(damage, knockback, push_dir)
 
 		call_deferred("queue_free")
